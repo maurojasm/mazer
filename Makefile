@@ -1,5 +1,7 @@
 CC = g++
+CFLAGS = -I
 TARGET = Mazer
+IDIR = ../include
 SRCDIR = src/
 
 Mazer: mazer.o maze.o
