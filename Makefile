@@ -1,14 +1,47 @@
+# Compiler
 CC = g++
-CFLAGS = -I
-TARGET = Mazer
-IDIR = ../include
-SRCDIR = src/
 
-Mazer: mazer.o maze.o
-	g++ -Wall -Wextra -Wpedantic -o p7 main.o bst.o
-mazer.o: mazer.cpp src/maze.h
-	g++ -Wall -Wextra -Wpedantic -c mazer.cpp
-maze.o: src/maze.cpp src/maze_generator.h src/texture.h src/tile.h src/dot.h
-	g++ -Wall -Wextra -Wpedantic -c src/maze.cpp
+# Binary file
+OBJ = Mazer
+
+# Source files
+SRC_DIR = src/
+SRC_FILES:= $(wildcard $(SRC_DIR)*.cpp)
+
+# Headers directory
+HEADER_DIR = include/
+HEADER_FILES = $(wildcard $(HEADER_DIR)*.h)
+# HEADER_FILES = $(HEADER_DIR)texture.h
+
+# Source objects
+OBJ_DIR := bin/
+OBJECT_FILES:= $(addprefix $(OBJ_DIR),$(notdir $(SRC_FILES:.cpp=.o)))
+# OBJECT_FILES:= $(addprefix $(OBJ_DIR), main.o texture.o)
+
+# Flags
+CFLAGS := -Wall -std=c++11
+
+# Linking Library
+LINK_LIB = -F /Library/Frameworks -framework SDL2 -F /Library/Frameworks -framework SDL2_image
+LIBRARY := -F /Library/Frameworks
+
+# Instantly runs the game after linking
+run: $(OBJ)
+	./$(OBJ)
+
+# Link objects to exec
+$(OBJ): $(OBJECT_FILES)
+	@echo "\nLinking..."
+	$(CC) $(CFLAGS) $(LINK_LIB) -o $(OBJ) $(OBJECT_FILES)
+	@echo "Linking for target $(OBJ) succeeded!\n"
+
+# Compile objects
+$(OBJ_DIR)%.o: $(SRC_DIR)%.cpp $(HEADER_FILES)
+	@echo "\nCompiling $@..."
+	$(CC) -c $(CFLAGS) $(LIBRARY) $< -o $@
+
+.PHONY: clean
+
 clean:
-	rm -f Mazer *.o *~%  
+	@echo "Cleaning object files..."
+	rm -f $(OBJ_DIR)*.o *~ $(OBJ) $(HEADER_DIR)/*~ 
