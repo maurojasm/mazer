@@ -10,7 +10,7 @@
 App::App() {
     if(!init()) {
         printf( "Failed to initialize!\n" );
-		return;
+		exit(1);
     }
 }
 
