@@ -74,6 +74,8 @@ void App::close() {
 	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
+
+	printf("All processes exited successfully.\n");
 }
 
 void App::start() {
