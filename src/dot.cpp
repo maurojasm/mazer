@@ -22,5 +22,5 @@ Dot::Dot() {
 
 void Dot::render(Texture &dot_texture, SDL_Renderer *renderer) {
     // render dot with texture
-    
+    dot_texture.render(hit_box.x, hit_box.y, renderer);
 }

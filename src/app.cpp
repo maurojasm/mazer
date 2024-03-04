@@ -84,6 +84,9 @@ void App::start() {
     //Event handler
 	SDL_Event e;
 
+	// dot moving around the screen
+	Dot dot;
+
     //app running
     while(!quit) {
         // handle events on queue
@@ -97,6 +100,8 @@ void App::start() {
         //Clear screen
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear(renderer);
+
+		dot.render(dot_texture, renderer);
 
         //Update screen
         SDL_RenderPresent(renderer);
