@@ -60,10 +60,24 @@ bool App::init() {
     return success;
 }
 
+bool App::load_media() {
+	// sucess variable
+	bool success = true;
+
+	// load dot texture
+	if(!dot_texture.load_from_file("assets/media/bmp/dot.bmp", renderer)) {
+		printf("Falied to load dot texture!\n");
+		success = false;
+		return success;
+	}
+
+	return success;
+}
+
 void App::close() {
     //Free loaded images
-	// dot_texture.free();
-	// tile_texture.free();
+	dot_texture.free();
+	tile_texture.free();
 
     //Destroy window	
 	SDL_DestroyRenderer( renderer );
@@ -79,6 +93,11 @@ void App::close() {
 }
 
 void App::start() {
+	// load media
+	if(!load_media()) {
+		printf("Failed to load media!\n");
+		return;
+	}
     bool quit = false;
 
     //Event handler

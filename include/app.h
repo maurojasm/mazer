@@ -25,6 +25,9 @@ class App {
         //Screen dimension constants
         const int SCREEN_WIDTH = 640;
         const int SCREEN_HEIGHT = 480;
+
+        //Loads media
+        bool load_media();
         
         //Starts up SDL and creates window
         bool init();
