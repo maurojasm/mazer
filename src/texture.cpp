@@ -67,15 +67,18 @@ void Texture::free() {
 }
 
 void Texture::set_color(Uint8 red, Uint8 green, Uint8 blue) {
-
+    //Modulate texture rgb
+	SDL_SetTextureColorMod(texture, red, green, blue);
 }
 
 void Texture::set_blend_mode(SDL_BlendMode blending) {
-
+    //Set blending function
+	SDL_SetTextureBlendMode(texture, blending);
 }
 
 void Texture::set_alpha(Uint8 alpha) {
-
+    //Modulate texture alpha
+	SDL_SetTextureAlphaMod( texture, alpha );
 }
 
 void Texture::render(int x, int y, SDL_Renderer* renderer, 
