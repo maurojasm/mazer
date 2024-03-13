@@ -114,7 +114,11 @@ void App::start() {
             if(e.type == SDL_QUIT) {
                 quit = true;
             }
+
+			dot.handle_event(e);
         }
+		// move dot
+		dot.move(SCREEN_HEIGHT, SCREEN_WIDTH);
 
         //Clear screen
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF );

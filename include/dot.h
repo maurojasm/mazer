@@ -23,6 +23,12 @@ class Dot {
         // render dot to the screen
         void render(Texture &dot_texture, SDL_Renderer *renderer);
 
+        // handle key presses to adjust velocity
+        void handle_event(SDL_Event& e);
+
+        // move the dot
+        void move(int LEVEL_HEIGHT, int LEVEL_WIDTH);
+
     private:
         // dot dimensions
         static const int d_height = 20;
