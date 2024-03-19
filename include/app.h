@@ -26,6 +26,10 @@ class App {
         const int SCREEN_WIDTH = 640;
         const int SCREEN_HEIGHT = 480;
 
+        //The dimensions of the level
+        const int LEVEL_WIDTH = 1600;
+        const int LEVEL_HEIGHT = 1600;
+
         //Loads media
         bool load_media();
         

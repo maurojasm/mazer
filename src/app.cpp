@@ -106,6 +106,9 @@ void App::start() {
 	// dot moving around the screen
 	Dot dot;
 
+	// level camera
+	SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+
     //app running
     while(!quit) {
         // handle events on queue
@@ -115,16 +118,18 @@ void App::start() {
                 quit = true;
             }
 
+			// handle input
 			dot.handle_event(e);
         }
 		// move dot
-		dot.move(SCREEN_HEIGHT, SCREEN_WIDTH);
+		dot.move(LEVEL_WIDTH, LEVEL_HEIGHT);
+		dot.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);
 
         //Clear screen
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear(renderer);
 
-		dot.render(dot_texture, renderer);
+		dot.render(dot_texture, camera, renderer);
 
         //Update screen
         SDL_RenderPresent(renderer);

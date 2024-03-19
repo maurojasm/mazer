@@ -21,13 +21,18 @@ class Dot {
         // void handle_event(SDL_Event &e);
 
         // render dot to the screen
-        void render(Texture &dot_texture, SDL_Renderer *renderer);
+        void render(Texture &dot_texture, SDL_Rect& camera, SDL_Renderer *renderer);
 
         // handle key presses to adjust velocity
         void handle_event(SDL_Event& e);
 
         // move the dot
         void move(int LEVEL_HEIGHT, int LEVEL_WIDTH);
+
+        // set camera over the dot
+        void set_camera(SDL_Rect& camera, int SCREEN_WIDTH, 
+                        int SCREEN_HEIGHT, int LEVEL_WIDTH, 
+                        int LEVEL_HEIGHT);
 
     private:
         // dot dimensions
