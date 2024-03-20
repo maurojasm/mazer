@@ -27,21 +27,21 @@ LIBRARY := -F /Library/Frameworks
 
 # Instantly runs the game after linking
 run: $(OBJ)
-    ./$(OBJ)
+	./$(OBJ)
 
 # Link objects to exec
 $(OBJ): $(OBJECT_FILES)
-    @echo "\nLinking..."
-    $(CC) $(CFLAGS) $(LINK_LIB) -o $(OBJ) $(OBJECT_FILES)
-    @echo "Linking for target $(OBJ) succeeded!\n"
+	@echo "\nLinking..."
+	$(CC) $(CFLAGS) $(LINK_LIB) -o $(OBJ) $(OBJECT_FILES)
+	@echo "Linking for target $(OBJ) succeeded!\n"
 
 # Compile objects
 $(OBJ_DIR)%.o: $(SRC_DIR)%.cpp $(HEADER_FILES)
-    @echo "\nCompiling $@..."
-    $(CC) -c $(CFLAGS) $(LIBRARY) $< -o $@
+	@echo "\nCompiling $@..."
+	$(CC) -c $(CFLAGS) $(LIBRARY) $< -o $@
 
 .PHONY: clean
 
 clean:
-    @echo "Cleaning object files..."
-    rm -f $(OBJ_DIR)*.o *~ $(OBJ) $(HEADER_DIR)/*~ 
+	@echo "Cleaning object files..."
+	rm -f $(OBJ_DIR)*.o *~ $(OBJ) $(HEADER_DIR)/*~ 
