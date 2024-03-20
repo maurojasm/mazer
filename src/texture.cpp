@@ -22,38 +22,38 @@ Texture::~Texture() {
 
 bool Texture::load_from_file(std::string path, SDL_Renderer *renderer) {
     //Get rid of preexisting texture
-	free();
+    free();
 
-	//The final texture
-	SDL_Texture* newTexture = NULL;
+    //The final texture
+    SDL_Texture* newTexture = NULL;
 
-	//Load image at specified path
-	SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
-	if( loadedSurface == NULL ) {
-		printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
+    //Load image at specified path
+    SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
+    if( loadedSurface == NULL ) {
+        printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
         return false;
-	} else {
-		//Color key image
-		SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB( loadedSurface->format, 0, 0xFF, 0xFF ) );
+    } else {
+        //Color key image
+        SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB( loadedSurface->format, 0, 0xFF, 0xFF ) );
 
-		//Create texture from surface pixels
+        //Create texture from surface pixels
         newTexture = SDL_CreateTextureFromSurface( renderer, loadedSurface );
-		if( newTexture == NULL ) {
-			printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
+        if( newTexture == NULL ) {
+            printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
             return false;
-		} else {
-			//Get image dimensions
-			t_width = loadedSurface->w;
-			t_height = loadedSurface->h;
-		}
+        } else {
+            //Get image dimensions
+            t_width = loadedSurface->w;
+            t_height = loadedSurface->h;
+        }
 
-		//Get rid of old loaded surface
-		SDL_FreeSurface( loadedSurface );
-	}
+        //Get rid of old loaded surface
+        SDL_FreeSurface( loadedSurface );
+    }
 
-	//Return success
-	texture = newTexture;
-	return texture != NULL;
+    //Return success
+    texture = newTexture;
+    return texture != NULL;
 }
 
 void Texture::free() {
@@ -68,17 +68,17 @@ void Texture::free() {
 
 void Texture::set_color(Uint8 red, Uint8 green, Uint8 blue) {
     //Modulate texture rgb
-	SDL_SetTextureColorMod(texture, red, green, blue);
+    SDL_SetTextureColorMod(texture, red, green, blue);
 }
 
 void Texture::set_blend_mode(SDL_BlendMode blending) {
     //Set blending function
-	SDL_SetTextureBlendMode(texture, blending);
+    SDL_SetTextureBlendMode(texture, blending);
 }
 
 void Texture::set_alpha(Uint8 alpha) {
     //Modulate texture alpha
-	SDL_SetTextureAlphaMod( texture, alpha );
+    SDL_SetTextureAlphaMod( texture, alpha );
 }
 
 void Texture::render(int x, int y, SDL_Renderer* renderer, 
