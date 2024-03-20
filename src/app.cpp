@@ -106,6 +106,9 @@ void App::start() {
     // dot moving around the screen
     Dot dot;
 
+    // maze to traverse
+    Maze my_maze(5);
+
     // level camera
     SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
