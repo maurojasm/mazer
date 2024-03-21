@@ -70,6 +70,22 @@ bool App::load_media() {
         success = false;
         return success;
     }
+    if(!tile_texture.load_from_file("assets/media/png/tiles/tiles.png", renderer)) {
+        printf("Falied to load tile texture!\n");
+        success = false;
+        return success;
+    }
+    if(!set_tiles()) {
+        printf("Falied to set tiles!\n");
+        success = false;
+        return success;
+    }
+
+    return success;
+}
+
+bool App::set_tiles() {
+    bool success = true;
 
     return success;
 }
@@ -105,9 +121,6 @@ void App::start() {
 
     // dot moving around the screen
     Dot dot;
-
-    // maze to traverse
-    Maze my_maze(5);
 
     // level camera
     SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};

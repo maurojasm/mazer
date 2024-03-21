@@ -31,6 +31,14 @@ class App {
         const int LEVEL_WIDTH = 1600;
         const int LEVEL_HEIGHT = 1600;
 
+        // tile constants
+        const int TOTAL_TILES = 192;
+		const int TOTAL_TILE_SPRITES = 12;
+
+        //The different tile sprites
+		const int TILE_GREEN = 0;
+		const int TILE_BLACK = 1;
+
         //Loads media
         bool load_media();
         
@@ -39,6 +47,9 @@ class App {
 
         //Frees media and shuts down SDL
         void close();
+
+        // set tiles from maze map
+        bool set_tiles();
 
         //The window we'll be rendering to
         SDL_Window* window = NULL;
@@ -49,4 +60,7 @@ class App {
         //Scene textures
         Texture dot_texture;
         Texture tile_texture;
+
+        // maze to traverse
+        Maze my_maze = Maze(5);
 };

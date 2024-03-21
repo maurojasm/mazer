@@ -6,8 +6,30 @@
 // #include <SDL_image.h>
 #include <stdio.h>
 #include <string>
-#include <fstream>
 
 class Tile {
+    public:
+        // constructor
+        // initializes position and tile type
+        Tile(int x, int y, int t_type);
 
+        // render tile to screen
+        void render(SDL_Rect& camera, Texture& tile_texture, 
+                    SDL_Rect tile_sprites[], SDL_Renderer* renderer);
+
+        // get tile type
+        int get_type() {return tile_type;}
+
+        // get tile hit box
+        SDL_Rect get_hit_box() {return hit_box;}
+    private:
+        // tile constants
+		const int TILE_WIDTH = 80;
+		const int TILE_HEIGHT = 80;
+
+        // tile hit box
+        SDL_Rect hit_box;
+
+        // title type
+        int tile_type;
 };

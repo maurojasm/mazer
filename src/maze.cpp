@@ -71,7 +71,7 @@ string Maze::generate_map_maze(string maze, int size) {
                     break;
                 }
             }
-            map += "\n";
+            // map += "\n";
         }
     }
     return map;
