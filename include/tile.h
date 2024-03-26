@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <string>
 
+#include "texture.h"
+
 class Tile {
     public:
         // constructor
@@ -17,11 +19,16 @@ class Tile {
         void render(SDL_Rect& camera, Texture& tile_texture, 
                     SDL_Rect tile_sprites[], SDL_Renderer* renderer);
 
+        /* getter funcs */ 
+        
         // get tile type
         int get_type() {return tile_type;}
 
         // get tile hit box
         SDL_Rect get_hit_box() {return hit_box;}
+        
+        int get_width() {return TILE_WIDTH;}
+        int get_height() {return TILE_HEIGHT;}
     private:
         // tile constants
 		const int TILE_WIDTH = 80;
