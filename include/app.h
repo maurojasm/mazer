@@ -32,12 +32,17 @@ class App {
         const int LEVEL_HEIGHT = 1600;
 
         // tile constants
-        const int TOTAL_TILES = 192;
-		const int TOTAL_TILE_SPRITES = 12;
+        // (this is static for now)
+        static const int TOTAL_TILES = 400;
+		static const int TOTAL_TILE_SPRITES = 2;
 
         //The different tile sprites
 		const int TILE_GREEN = 0;
 		const int TILE_BLACK = 1;
+
+        // maze dimensions
+        // (static for now)
+        static const int MAZE_DIM = 5;
 
         //Loads media
         bool load_media();
@@ -62,5 +67,11 @@ class App {
         Texture tile_texture;
 
         // maze to traverse
-        Maze my_maze = Maze(5);
+        Maze my_maze = Maze(MAZE_DIM);
+
+        // tiles required for level
+        Tile *game_tiles[TOTAL_TILES];
+
+        // sprites from tile texture
+        SDL_Rect tile_sprites[TOTAL_TILE_SPRITES];
 };

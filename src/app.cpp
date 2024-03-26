@@ -85,12 +85,76 @@ bool App::load_media() {
 }
 
 bool App::set_tiles() {
-    bool success = true;
+    // success flag
+    bool tiles_loaded = true;
+    
+    // coordinates offset
+    int x = 0, y = 0;
 
-    return success;
+    // get map from maze
+    string map = my_maze.get_map();
+
+    for(int i = 0; i < TOTAL_TILES; i++) {
+        // type of tile
+        int tile_type = -1;
+        try {
+            tile_type = atoi((char *) map.at(i));
+        } catch (const std::exception&) {
+            //Stop loading map
+            printf( "Error loading map!\n" );
+            tiles_loaded = false;
+            return tiles_loaded;
+        }
+
+        if(tile_type >= 0 && tile_type < TOTAL_TILE_SPRITES) {
+            game_tiles[i] = new Tile(x, y, tile_type);
+        } //If we don't recognize the tile type
+        else {
+            //Stop loading map
+            printf( "Error loading map: Invalid tile type at %d!\n", i );
+            tiles_loaded = false;
+            return tiles_loaded;
+        }
+
+        //Move to next tile spot
+        x += game_tiles[i] -> get_width();
+
+        //If we've gone too far
+        if( x >= LEVEL_WIDTH )
+        {
+            //Move back
+            x = 0;
+
+            //Move to the next row
+            y += game_tiles[i] -> get_height();
+        }
+        
+    }
+
+    if(tiles_loaded) {
+        tile_sprites[TILE_GREEN].x = 0;
+        tile_sprites[TILE_GREEN].y = 0;
+        tile_sprites[TILE_GREEN].w = game_tiles[0]->get_width();
+        tile_sprites[TILE_GREEN].h = game_tiles[0]->get_height();
+
+        tile_sprites[TILE_BLACK].x = 0;
+        tile_sprites[TILE_BLACK].y = 0;
+        tile_sprites[TILE_BLACK].w = game_tiles[0]->get_width();
+        tile_sprites[TILE_BLACK].h = game_tiles[0]->get_height();
+    }
+
+    // return if success on loading
+    return tiles_loaded;
 }
 
 void App::close() {
+    // free all tiles
+    for(int i = 0; i < TOTAL_TILES; i++) {
+        if(game_tiles[i] != NULL) {
+            delete game_tiles[i];
+            game_tiles[i] = NULL;
+        }
+    }
     //Free loaded images
     dot_texture.free();
     tile_texture.free();
