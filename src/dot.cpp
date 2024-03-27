@@ -12,8 +12,9 @@
 Dot::Dot() {
     // initialize hit box dimentions
     hit_box.x = 0;
-    hit_box.y = 0;
+    hit_box.y = 160;
     hit_box.h = d_height;
+    hit_box.w = d_width;
 
     // initialize dot's velocity
     x_vel = 0;

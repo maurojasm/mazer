@@ -97,14 +97,7 @@ bool App::set_tiles() {
     for(int i = 0; i < TOTAL_TILES; i++) {
         // type of tile
         int tile_type = -1;
-        try {
-            tile_type = atoi((char *) map.at(i));
-        } catch (const std::exception&) {
-            //Stop loading map
-            printf( "Error loading map!\n" );
-            tiles_loaded = false;
-            return tiles_loaded;
-        }
+        tile_type = map[i] - '0';
 
         if(tile_type >= 0 && tile_type < TOTAL_TILE_SPRITES) {
             game_tiles[i] = new Tile(x, y, tile_type);
@@ -120,8 +113,7 @@ bool App::set_tiles() {
         x += game_tiles[i] -> get_width();
 
         //If we've gone too far
-        if( x >= LEVEL_WIDTH )
-        {
+        if( x >= LEVEL_WIDTH ) {
             //Move back
             x = 0;
 
@@ -130,14 +122,15 @@ bool App::set_tiles() {
         }
         
     }
-
+    
+    // set sprites from tiles.png
     if(tiles_loaded) {
         tile_sprites[TILE_GREEN].x = 0;
         tile_sprites[TILE_GREEN].y = 0;
         tile_sprites[TILE_GREEN].w = game_tiles[0]->get_width();
         tile_sprites[TILE_GREEN].h = game_tiles[0]->get_height();
 
-        tile_sprites[TILE_BLACK].x = 0;
+        tile_sprites[TILE_BLACK].x = 80;
         tile_sprites[TILE_BLACK].y = 0;
         tile_sprites[TILE_BLACK].w = game_tiles[0]->get_width();
         tile_sprites[TILE_BLACK].h = game_tiles[0]->get_height();
@@ -209,6 +202,12 @@ void App::start() {
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear(renderer);
 
+        // render each tile from level
+        for(int i = 0; i < TOTAL_TILES; i++) {
+            game_tiles[i] -> render(camera, tile_texture, tile_sprites, renderer);
+        }
+
+        // render the dot
         dot.render(dot_texture, camera, renderer);
 
         //Update screen
