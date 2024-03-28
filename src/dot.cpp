@@ -8,6 +8,7 @@
 
 #include "../include/dot.h"
 #include "../include/texture.h"
+#include "../include/utils.h"
 
 Dot::Dot() {
     // initialize hit box dimentions
@@ -44,12 +45,12 @@ void Dot::handle_event(SDL_Event& e) {
     }
 }
 
-void Dot::move(int LEVEL_HEIGHT, int LEVEL_WIDTH) {
+void Dot::move(int LEVEL_HEIGHT, int LEVEL_WIDTH, int TOTAL_TILES, Tile* game_tiles[]) {
     // move dot left or right
     hit_box.x += x_vel;
 
     // check screen bounds
-    if(hit_box.x < 0 || hit_box.x + d_width > LEVEL_WIDTH) {
+    if(hit_box.x < 0 || hit_box.x + d_width > LEVEL_WIDTH || touches_wall(hit_box, game_tiles, TOTAL_TILES)) {
         // move back
         hit_box.x -= x_vel;
     }
@@ -58,7 +59,7 @@ void Dot::move(int LEVEL_HEIGHT, int LEVEL_WIDTH) {
     hit_box.y += y_vel;
 
     // check screen bounds
-    if(hit_box.y < 0 || hit_box.y + d_height > LEVEL_HEIGHT) {
+    if(hit_box.y < 0 || hit_box.y + d_height > LEVEL_HEIGHT || touches_wall(hit_box, game_tiles, TOTAL_TILES)) {
         // move back
         hit_box.y -= y_vel;
     }
@@ -86,4 +87,18 @@ void Dot::set_camera(SDL_Rect& camera, int SCREEN_WIDTH,
     if(camera.y > LEVEL_HEIGHT - camera.h) {
         camera.y = LEVEL_HEIGHT - camera.h;
     }
+}
+
+bool Dot::touches_wall(SDL_Rect hit_box, Tile* game_tiles[], int TOTAL_TILES) {
+    // check all tiles
+    for(int i = 0; i < TOTAL_TILES; i++) {
+        // if tile is a wall type
+        if(game_tiles[i] -> get_type() == 1) {
+            // check collison between dot's hit box and the wall tile
+            if(check_collision(hit_box, game_tiles[i]->get_hit_box())) {
+                return true;
+            }
+        }
+    }
+    return false;
 }

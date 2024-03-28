@@ -195,7 +195,7 @@ void App::start() {
             dot.handle_event(e);
         }
         // move dot
-        dot.move(LEVEL_WIDTH, LEVEL_HEIGHT);
+        dot.move(LEVEL_WIDTH, LEVEL_HEIGHT, TOTAL_TILES, game_tiles);
         dot.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);
 
         //Clear screen

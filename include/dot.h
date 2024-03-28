@@ -11,14 +11,12 @@
 #include <fstream>
 
 #include "texture.h"
+#include "tile.h"
 
 class Dot {
     public:
         // constructor
         Dot();
-
-        // handles key press events to ajust dot's vel
-        // void handle_event(SDL_Event &e);
 
         // render dot to the screen
         void render(Texture &dot_texture, SDL_Rect& camera, SDL_Renderer *renderer);
@@ -27,15 +25,18 @@ class Dot {
         void handle_event(SDL_Event& e);
 
         // move the dot
-        void move(int LEVEL_HEIGHT, int LEVEL_WIDTH);
+        void move(int LEVEL_HEIGHT, int LEVEL_WIDTH, int TOTAL_TILES, Tile* game_tiles[]);
 
         // set camera over the dot
         void set_camera(SDL_Rect& camera, int SCREEN_WIDTH, 
                         int SCREEN_HEIGHT, int LEVEL_WIDTH, 
                         int LEVEL_HEIGHT);
 
+        // checks collision between dot and wall tile
+        bool touches_wall(SDL_Rect hit_box, Tile* game_tiles[], int TOTAL_TILES);
+
     private:
-        // dot dimensions
+        // dot dimensions (hit box)
         static const int d_height = 20;
         static const int d_width = 20;
 
