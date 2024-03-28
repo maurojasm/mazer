@@ -4,7 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
 
-bool check_collision(SDL_Rect a, SDL_Rect b) {
+inline bool check_collision(SDL_Rect a, SDL_Rect b) {
     //The sides of the rectangles
     int leftA, leftB;
     int rightA, rightB;
