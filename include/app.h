@@ -5,7 +5,7 @@
 #include <SDL2_image/SDL_image.h>
 #include <stdio.h>
 #include <string>
-#include <fstream>
+#include <vector>
 
 #include "../include/dot.h"
 #include "../include/tile.h"
@@ -27,22 +27,20 @@ class App {
         const int SCREEN_WIDTH = 640;
         const int SCREEN_HEIGHT = 480;
 
-        //The dimensions of the level
-        const int LEVEL_WIDTH = 1600;
-        const int LEVEL_HEIGHT = 1600;
+        //default dimensions of the level
+        int LEVEL_WIDTH = 1600;
+        int LEVEL_HEIGHT = 1600;
 
-        // tile constants
-        // (this is static for now)
-        static const int TOTAL_TILES = 400;
+        // tile settings
+        int TOTAL_TILES = 400;
 		static const int TOTAL_TILE_SPRITES = 2;
 
-        //The different tile sprites
+        // different tile sprites
 		const int TILE_GREEN = 0;
 		const int TILE_BLACK = 1;
 
-        // maze dimensions
-        // (static for now)
-        static const int MAZE_DIM = 5;
+        // default maze dimensions
+        int MAZE_DIM = 5;
 
         //Loads media
         bool load_media();
@@ -67,10 +65,10 @@ class App {
         Texture tile_texture;
 
         // maze to traverse
-        Maze my_maze = Maze(MAZE_DIM);
+        Maze *my_maze = NULL;
 
         // tiles required for level
-        Tile *game_tiles[TOTAL_TILES];
+        std::vector<Tile*> game_tiles;
 
         // sprites from tile texture
         SDL_Rect tile_sprites[TOTAL_TILE_SPRITES];
