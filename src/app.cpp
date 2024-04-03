@@ -173,8 +173,6 @@ void App::start() {
     }
     bool quit = false;
 
-    int level = 1;
-
     //Event handler
     SDL_Event e;
 
