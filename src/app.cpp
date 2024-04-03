@@ -1,10 +1,3 @@
-//Using SDL, SDL_image, standard IO, strings, and file streams
-#include <SDL2/SDL.h>
-#include <SDL2_image/SDL_image.h>
-#include <stdio.h>
-#include <string>
-#include <fstream>
-
 #include "../include/app.h"
 
 App::App() {
@@ -197,7 +190,7 @@ void App::start() {
         printf("Incompabile Difficulty!\n");
         return;
     }
-    
+
     my_maze = new Maze(MAZE_DIM);
 
     if(!set_tiles()) {

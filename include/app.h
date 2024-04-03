@@ -7,10 +7,10 @@
 #include <string>
 #include <vector>
 
-#include "../include/dot.h"
-#include "../include/tile.h"
-#include "../include/texture.h"
-#include "../include/maze.h"
+#include "dot.h"
+#include "tile.h"
+#include "texture.h"
+#include "maze.h"
 
 class App {
     public:

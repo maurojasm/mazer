@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <string>
 #include <ctime>
 
 #include "../include/maze_generator.h"

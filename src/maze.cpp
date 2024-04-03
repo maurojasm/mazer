@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <string>
-
 #include "../include/maze.h"
 
 Maze::Maze(int size) {
@@ -71,7 +68,6 @@ string Maze::generate_map_maze(string maze, int size) {
                     break;
                 }
             }
-            // map += "\n";
         }
     }
     return map;
