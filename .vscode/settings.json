@@ -17,5 +17,12 @@
         "ratio": "cpp",
         "tuple": "cpp",
         "utility": "cpp"
-    }
+    },
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/Users/maurojaz/Desktop/game_dev/mazer",
+            "binaryPath": "/Users/maurojaz/Desktop/game_dev/mazer/Mazer",
+            "binaryArgs": []
+        }
+    ]
 }
