@@ -8,6 +8,15 @@
 #include <string>
 #include <fstream>
 
-class Maze_Gen {
+using std::string;
 
+class Maze_Gen {
+    public:
+        //constructor
+        Maze_Gen();
+
+        // generates random hex maze
+        string generate_maze(int size = 5);
+
+    //private:
 };

@@ -70,11 +70,90 @@ bool App::load_media() {
         success = false;
         return success;
     }
+    // load dot texture
+    if(!dot_texture.load_from_file("assets/media/bmp/dot.bmp", renderer)) {
+        printf("Falied to load dot texture!\n");
+        success = false;
+        return success;
+    }
+    if(!tile_texture.load_from_file("assets/media/png/tiles/tiles.png", renderer)) {
+        printf("Falied to load tile texture!\n");
+        success = false;
+        return success;
+    }
+    if(!set_tiles()) {
+        printf("Falied to set tiles!\n");
+        success = false;
+        return success;
+    }
 
     return success;
 }
 
+bool App::set_tiles() {
+    // success flag
+    bool tiles_loaded = true;
+    
+    // coordinates offset
+    int x = 0, y = 0;
+
+    // get map from maze
+    string map = my_maze.get_map();
+
+    for(int i = 0; i < TOTAL_TILES; i++) {
+        // type of tile
+        int tile_type = -1;
+        tile_type = map[i] - '0';
+
+        if(tile_type >= 0 && tile_type < TOTAL_TILE_SPRITES) {
+            game_tiles[i] = new Tile(x, y, tile_type);
+        } //If we don't recognize the tile type
+        else {
+            //Stop loading map
+            printf( "Error loading map: Invalid tile type at %d!\n", i );
+            tiles_loaded = false;
+            return tiles_loaded;
+        }
+
+        //Move to next tile spot
+        x += game_tiles[i] -> get_width();
+
+        //If we've gone too far
+        if( x >= LEVEL_WIDTH ) {
+            //Move back
+            x = 0;
+
+            //Move to the next row
+            y += game_tiles[i] -> get_height();
+        }
+        
+    }
+    
+    // set sprites from tiles.png
+    if(tiles_loaded) {
+        tile_sprites[TILE_GREEN].x = 0;
+        tile_sprites[TILE_GREEN].y = 0;
+        tile_sprites[TILE_GREEN].w = game_tiles[0]->get_width();
+        tile_sprites[TILE_GREEN].h = game_tiles[0]->get_height();
+
+        tile_sprites[TILE_BLACK].x = 80;
+        tile_sprites[TILE_BLACK].y = 0;
+        tile_sprites[TILE_BLACK].w = game_tiles[0]->get_width();
+        tile_sprites[TILE_BLACK].h = game_tiles[0]->get_height();
+    }
+
+    // return if success on loading
+    return tiles_loaded;
+}
+
 void App::close() {
+    // free all tiles
+    for(int i = 0; i < TOTAL_TILES; i++) {
+        if(game_tiles[i] != NULL) {
+            delete game_tiles[i];
+            game_tiles[i] = NULL;
+        }
+    }
     //Free loaded images
     dot_texture.free();
     tile_texture.free();
@@ -103,11 +182,11 @@ void App::start() {
     //Event handler
     SDL_Event e;
 
-	// dot moving around the screen
-	Dot dot;
+    // dot moving around the screen
+    Dot dot;
 
-	// level camera
-	SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+    // level camera
+    SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 
     //app running
     while(!quit) {
@@ -118,18 +197,24 @@ void App::start() {
                 quit = true;
             }
 
-			// handle input
-			dot.handle_event(e);
+            // handle input
+            dot.handle_event(e);
         }
-		// move dot
-		dot.move(LEVEL_WIDTH, LEVEL_HEIGHT);
-		dot.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);
+        // move dot
+        dot.move(LEVEL_WIDTH, LEVEL_HEIGHT);
+        dot.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);
 
         //Clear screen
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear(renderer);
 
-		dot.render(dot_texture, camera, renderer);
+        // render each tile from level
+        for(int i = 0; i < TOTAL_TILES; i++) {
+            game_tiles[i] -> render(camera, tile_texture, tile_sprites, renderer);
+        }
+
+        // render the dot
+        dot.render(dot_texture, camera, renderer);
 
         //Update screen
         SDL_RenderPresent(renderer);
