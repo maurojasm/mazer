@@ -8,7 +8,7 @@
 // #include <SDL_image.h>
 #include <stdio.h>
 #include <string>
-#include <fstream>
+#include <vector>
 
 #include "texture.h"
 #include "tile.h"
@@ -25,7 +25,7 @@ class Dot {
         void handle_event(SDL_Event& e);
 
         // move the dot
-        void move(int LEVEL_HEIGHT, int LEVEL_WIDTH, int TOTAL_TILES, Tile* game_tiles[]);
+        void move(int LEVEL_HEIGHT, int LEVEL_WIDTH, int TOTAL_TILES, std::vector<Tile*> game_tiles);
 
         // set camera over the dot
         void set_camera(SDL_Rect& camera, int SCREEN_WIDTH, 
@@ -33,7 +33,7 @@ class Dot {
                         int LEVEL_HEIGHT);
 
         // checks collision between dot and wall tile
-        bool touches_wall(SDL_Rect hit_box, Tile* game_tiles[], int TOTAL_TILES);
+        bool touches_wall(SDL_Rect hit_box, std::vector<Tile*> game_tiles, int TOTAL_TILES);
 
     private:
         // dot dimensions (hit box)
