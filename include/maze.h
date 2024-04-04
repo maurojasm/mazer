@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MAZE_H
+#define MAZE_H
 
 #include <string>
 
@@ -104,3 +105,5 @@ class Maze {
                     "1000",
                     "1111"};
 };
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MY_APP
+#define MY_APP
 
 //Using SDL, SDL_image, standard IO, strings, and file streams
 #include <SDL2/SDL.h>
@@ -73,3 +74,5 @@ class App {
         // sprites from tile texture
         SDL_Rect tile_sprites[TOTAL_TILE_SPRITES];
 };
+
+#endif

@@ -1,6 +1,7 @@
-#pragma once
+#ifndef MAZE_GEN_H
+#define MAZE_GEN_H
 
-#include <stdio.h>
+// #include <stdio.h>
 #include <string>
 #include <vector>
 
@@ -49,3 +50,5 @@ class Maze_Gen {
             "9c8aa8bddd635c83c215cb776a1e35688bdd6a83c36941e81d5e9635c3637e0bc23de9e95e0bd5c1d55c3c34156222a2a376"
         };
 };
+
+#endif
