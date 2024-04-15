@@ -25,8 +25,8 @@ class App {
         void start();
     private:
         //Screen dimension constants
-        const int SCREEN_WIDTH = 640;
-        const int SCREEN_HEIGHT = 480;
+        const int SCREEN_WIDTH = 1280;
+        const int SCREEN_HEIGHT = 720;
 
         //default dimensions of the level
         int LEVEL_WIDTH = 1600;
