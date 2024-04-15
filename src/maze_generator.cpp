@@ -29,6 +29,7 @@ string Maze_Gen::generate_maze(int size) {
         maze = hard_collection[get_rand(hard_collection.size())];
         break;
     default:
+        maze = easy_collection[get_rand(easy_collection.size())];
         break;
     }
 

@@ -33,6 +33,21 @@ class Maze {
         // generator of maze in hexadecimal format
         Maze_Gen maze_generator;
 
+        // finds cell in array
+        bool has_char(char cell, char arr[]);
+
+        // checks if cell has right wall
+        bool has_right_wall(char cell) { return has_char(cell, has_right); }
+
+        // checks if cell has top wall
+        bool has_top_wall(char cell) { return has_char(cell, has_top); }
+
+        // removes double walls from the maze
+        string remove_dbl_walls(string maze, int size);
+
+        // fills corners after removing double walls
+        string fill_wall(string map, int size);
+
         // hex maze
         string hex_maze;
 
@@ -41,6 +56,12 @@ class Maze {
 
         // maze size
         int m_size;
+
+        // cells that have a right wall
+        char has_right[7] = {'4', '5', '6', '7', 'c', 'd', 'e'};
+
+        // cells that have a top wall
+        char has_top[7] = {'8', '9', 'a', 'b', 'c', 'd', 'e'};
 
         // maze tile to map
         string
