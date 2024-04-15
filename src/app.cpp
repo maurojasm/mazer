@@ -1,10 +1,3 @@
-//Using SDL, SDL_image, standard IO, strings, and file streams
-#include <SDL2/SDL.h>
-#include <SDL2_image/SDL_image.h>
-#include <stdio.h>
-#include <string>
-#include <fstream>
-
 #include "../include/app.h"
 
 App::App() {
@@ -75,11 +68,6 @@ bool App::load_media() {
         success = false;
         return success;
     }
-    if(!set_tiles()) {
-        printf("Falied to set tiles!\n");
-        success = false;
-        return success;
-    }
 
     return success;
 }
@@ -92,7 +80,7 @@ bool App::set_tiles() {
     int x = 0, y = 0;
 
     // get map from maze
-    string map = my_maze.get_map();
+    string map = my_maze->get_map();
 
     for(int i = 0; i < TOTAL_TILES; i++) {
         // type of tile
@@ -100,7 +88,7 @@ bool App::set_tiles() {
         tile_type = map[i] - '0';
 
         if(tile_type >= 0 && tile_type < TOTAL_TILE_SPRITES) {
-            game_tiles[i] = new Tile(x, y, tile_type);
+            game_tiles.push_back(new Tile(x, y, tile_type));
         } //If we don't recognize the tile type
         else {
             //Stop loading map
@@ -148,6 +136,8 @@ void App::close() {
             game_tiles[i] = NULL;
         }
     }
+    // Delete maze obj
+    delete my_maze; my_maze = NULL;
     //Free loaded images
     dot_texture.free();
     tile_texture.free();
@@ -173,6 +163,41 @@ void App::start() {
     }
     bool quit = false;
 
+    int level = 2;
+
+    if(level == 0) {
+        MAZE_DIM = 5;
+
+        LEVEL_WIDTH = 1600;
+        LEVEL_HEIGHT = 1600;
+
+        TOTAL_TILES = 400;
+    } else if (level == 1) {
+        MAZE_DIM = 8;
+
+        LEVEL_WIDTH = 2560;
+        LEVEL_HEIGHT = 2560;
+
+        TOTAL_TILES = 1024;
+    } else if (level == 2) {
+        MAZE_DIM = 10;
+
+        LEVEL_WIDTH = 3200;
+        LEVEL_HEIGHT = 3200;
+
+        TOTAL_TILES = 1600;
+    } else {
+        printf("Incompabile Difficulty!\n");
+        return;
+    }
+
+    my_maze = new Maze(MAZE_DIM);
+
+    if(!set_tiles()) {
+        printf("Falied to set tiles!\n");
+        return;
+    }
+    
     //Event handler
     SDL_Event e;
 

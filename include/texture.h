@@ -1,12 +1,10 @@
-#pragma once
+#ifndef TEXTURE_H
+#define TEXTURE_H
 
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
-// #include <SDL.h>
-// #include <SDL_image.h>
-#include <stdio.h>
+// #include <stdio.h>
 #include <string>
-#include <fstream>
 
 class Texture {
     public:
@@ -47,3 +45,5 @@ class Texture {
         // image dimensions
         int t_width, t_height;
 };
+
+#endif
