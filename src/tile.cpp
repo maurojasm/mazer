@@ -6,7 +6,6 @@
 #include <string>
 
 #include "../include/tile.h"
-#include "../include/texture.h"
 #include "../include/utils.h"
 
 Tile::Tile(int x, int y, int t_type) {

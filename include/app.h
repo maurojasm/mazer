@@ -28,12 +28,13 @@ class App {
         const int SCREEN_HEIGHT = 480;
 
         //The dimensions of the level
+        // (5x5 maze)
         const int LEVEL_WIDTH = 1600;
         const int LEVEL_HEIGHT = 1600;
 
         // tile constants
         // (this is static for now)
-        static const int TOTAL_TILES = 400;
+        static const int TOTAL_TILES = 400; // 5x5 maze
 		static const int TOTAL_TILE_SPRITES = 2;
 
         //The different tile sprites
