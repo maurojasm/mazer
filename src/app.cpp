@@ -1,8 +1,8 @@
 #include "../include/app.h"
 
 App::App() {
-    if(!init()) {
-        printf( "Failed to initialize!\n" );
+    if (!init()) {
+        printf("Failed to initialize!\n");
         exit(1);
     }
 }
@@ -16,34 +16,37 @@ bool App::init() {
     bool success = true;
 
     //Initialize SDL
-    if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
-        printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
         success = false;
-    } else {
+    }
+    else {
         //Set texture filtering to linear
-        if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) ) {
-            printf( "Warning: Linear texture filtering not enabled!" );
+        if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
+            printf("Warning: Linear texture filtering not enabled!");
         }
 
         //Create window
-        window = SDL_CreateWindow( "Mazer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
-        if( window == NULL ) {
-            printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
+        window = SDL_CreateWindow("Mazer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        if (window == NULL) {
+            printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
             success = false;
-        } else {
+        }
+        else {
             //Create renderer for window
-            renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
-            if( renderer == NULL ) {
-                printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
+            renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+            if (renderer == NULL) {
+                printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
                 success = false;
-            } else {
+            }
+            else {
                 //Initialize renderer color
-                SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
+                SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
                 //Initialize PNG loading
                 int imgFlags = IMG_INIT_PNG;
-                if( !( IMG_Init( imgFlags ) & imgFlags ) ) {
-                    printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+                if (!(IMG_Init(imgFlags) & imgFlags)) {
+                    printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
                     success = false;
                 }
             }
@@ -58,12 +61,13 @@ bool App::load_media() {
     bool success = true;
 
     // load dot texture
-    if(!dot_texture.load_from_file("assets/media/bmp/dot.bmp", renderer)) {
+    int rgb[] = { 0x00, 0xFF, 0xFF };
+    if (!dot_texture.load_from_file("assets/media/bmp/dot.bmp", renderer, true, rgb)) {
         printf("Falied to load dot texture!\n");
         success = false;
         return success;
     }
-    if(!tile_texture.load_from_file("assets/media/png/tiles/tiles.png", renderer)) {
+    if (!tile_texture.load_from_file("assets/media/png/tiles/tiles.png", renderer)) {
         printf("Falied to load tile texture!\n");
         success = false;
         return success;
@@ -75,44 +79,44 @@ bool App::load_media() {
 bool App::set_tiles() {
     // success flag
     bool tiles_loaded = true;
-    
+
     // coordinates offset
     int x = 0, y = 0;
 
     // get map from maze
     string map = my_maze->get_map();
 
-    for(int i = 0; i < TOTAL_TILES; i++) {
+    for (int i = 0; i < TOTAL_TILES; i++) {
         // type of tile
         int tile_type = -1;
         tile_type = map[i] - '0';
 
-        if(tile_type >= 0 && tile_type < TOTAL_TILE_SPRITES) {
+        if (tile_type >= 0 && tile_type < TOTAL_TILE_SPRITES) {
             game_tiles.push_back(new Tile(x, y, tile_type));
         } //If we don't recognize the tile type
         else {
             //Stop loading map
-            printf( "Error loading map: Invalid tile type at %d!\n", i );
+            printf("Error loading map: Invalid tile type at %d!\n", i);
             tiles_loaded = false;
             return tiles_loaded;
         }
 
         //Move to next tile spot
-        x += game_tiles[i] -> get_width();
+        x += game_tiles[i]->get_width();
 
         //If we've gone too far
-        if( x >= LEVEL_WIDTH ) {
+        if (x >= LEVEL_WIDTH) {
             //Move back
             x = 0;
 
             //Move to the next row
-            y += game_tiles[i] -> get_height();
+            y += game_tiles[i]->get_height();
         }
-        
+
     }
-    
+
     // set sprites from tiles.png
-    if(tiles_loaded) {
+    if (tiles_loaded) {
         tile_sprites[TILE_GREEN].x = 0;
         tile_sprites[TILE_GREEN].y = 0;
         tile_sprites[TILE_GREEN].w = game_tiles[0]->get_width();
@@ -130,8 +134,8 @@ bool App::set_tiles() {
 
 void App::close() {
     // free all tiles
-    for(int i = 0; i < TOTAL_TILES; i++) {
-        if(game_tiles[i] != NULL) {
+    for (int i = 0; i < TOTAL_TILES; i++) {
+        if (game_tiles[i] != NULL) {
             delete game_tiles[i];
             game_tiles[i] = NULL;
         }
@@ -143,8 +147,8 @@ void App::close() {
     tile_texture.free();
 
     //Destroy window	
-    SDL_DestroyRenderer( renderer );
-    SDL_DestroyWindow( window );
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
     window = NULL;
     renderer = NULL;
 
@@ -157,7 +161,7 @@ void App::close() {
 
 void App::start() {
     // load media
-    if(!load_media()) {
+    if (!load_media()) {
         printf("Failed to load media!\n");
         return;
     }
@@ -165,39 +169,42 @@ void App::start() {
 
     int level = 2;
 
-    if(level == 0) {
+    if (level == 0) {
         MAZE_DIM = 5;
 
         LEVEL_WIDTH = 1600;
         LEVEL_HEIGHT = 1600;
 
         TOTAL_TILES = 400;
-    } else if (level == 1) {
+    }
+    else if (level == 1) {
         MAZE_DIM = 8;
 
         LEVEL_WIDTH = 2560;
         LEVEL_HEIGHT = 2560;
 
         TOTAL_TILES = 1024;
-    } else if (level == 2) {
+    }
+    else if (level == 2) {
         MAZE_DIM = 10;
 
         LEVEL_WIDTH = 3200;
         LEVEL_HEIGHT = 3200;
 
         TOTAL_TILES = 1600;
-    } else {
+    }
+    else {
         printf("Incompabile Difficulty!\n");
         return;
     }
 
     my_maze = new Maze(MAZE_DIM);
 
-    if(!set_tiles()) {
+    if (!set_tiles()) {
         printf("Falied to set tiles!\n");
         return;
     }
-    
+
     //Event handler
     SDL_Event e;
 
@@ -205,14 +212,14 @@ void App::start() {
     Dot dot;
 
     // level camera
-    SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+    SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
     //app running
-    while(!quit) {
+    while (!quit) {
         // handle events on queue
-        while(SDL_PollEvent(&e) != 0) {
+        while (SDL_PollEvent(&e) != 0) {
             // user requests quit
-            if(e.type == SDL_QUIT) {
+            if (e.type == SDL_QUIT) {
                 quit = true;
             }
 
@@ -224,12 +231,12 @@ void App::start() {
         dot.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);
 
         //Clear screen
-        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF );
+        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
 
         // render each tile from level
-        for(int i = 0; i < TOTAL_TILES; i++) {
-            game_tiles[i] -> render(camera, tile_texture, tile_sprites, renderer);
+        for (int i = 0; i < TOTAL_TILES; i++) {
+            game_tiles[i]->render(camera, tile_texture, tile_sprites, renderer);
         }
 
         // render the dot
