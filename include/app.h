@@ -12,67 +12,104 @@
 #include "tile.h"
 #include "texture.h"
 #include "maze.h"
+#include "menu.h"
 
 class App {
-    public:
-        // constructor
-        App();
+public:
+    // constructor
+    App();
 
-        // destructor
-        ~App();
+    // destructor
+    ~App();
 
-        // starts application 
-        void start();
-    private:
-        //Screen dimension constants
-        const int SCREEN_WIDTH = 1280;
-        const int SCREEN_HEIGHT = 720;
+    // starts application 
+    void start();
+private:
+    //Loads media
+    bool load_media();
 
-        //default dimensions of the level
-        int LEVEL_WIDTH = 1600;
-        int LEVEL_HEIGHT = 1600;
+    //Starts up SDL and creates window
+    bool init();
 
-        // tile settings
-        int TOTAL_TILES = 400;
-		static const int TOTAL_TILE_SPRITES = 2;
+    //Frees media and shuts down SDL
+    void close();
 
-        // different tile sprites
-		const int TILE_GREEN = 0;
-		const int TILE_BLACK = 1;
+    // set tiles from maze map
+    bool set_tiles();
+    void render_tiles();
 
-        // default maze dimensions
-        int MAZE_DIM = 5;
+    void set_menu();
 
-        //Loads media
-        bool load_media();
-        
-        //Starts up SDL and creates window
-        bool init();
+    void set_level(int difficulty);
 
-        //Frees media and shuts down SDL
-        void close();
+    void main_menu_handle_e();
 
-        // set tiles from maze map
-        bool set_tiles();
+    void diff_menu_handle_e();
 
-        //The window we'll be rendering to
-        SDL_Window* window = NULL;
+    void pause_menu_handle_e();
 
-        //The window renderer
-        SDL_Renderer* renderer = NULL;
+    void player_handle_e();
 
-        //Scene textures
-        Texture dot_texture;
-        Texture tile_texture;
+    //Screen dimension constants
+    const int SCREEN_WIDTH = 1280;
+    const int SCREEN_HEIGHT = 720;
 
-        // maze to traverse
-        Maze *my_maze = NULL;
+    //default dimensions of the level
+    int LEVEL_WIDTH = 1600;
+    int LEVEL_HEIGHT = 1600;
 
-        // tiles required for level
-        std::vector<Tile*> game_tiles;
+    // tile settings
+    int TOTAL_TILES = 400;
+    static const int TOTAL_TILE_SPRITES = 2;
 
-        // sprites from tile texture
-        SDL_Rect tile_sprites[TOTAL_TILE_SPRITES];
+    // different tile sprites
+    const int TILE_GREEN = 0;
+    const int TILE_BLACK = 1;
+
+    // default maze dimensions
+    int MAZE_DIM = 5;
+
+    // flags
+    bool quit = false,
+        active_main_menu = true,
+        active_difficulty_menu = false,
+        active_pause_menu = false,
+        play = false;
+
+    // button option
+    int button_pressed;
+
+    //The window we'll be rendering to
+    SDL_Window* window = NULL;
+
+    //The window renderer
+    SDL_Renderer* renderer = NULL;
+
+    //Scene textures
+    Texture dot_texture;
+    Texture tile_texture;
+
+    //Event handler
+    SDL_Event e;
+
+    // dot moving around the screen
+    Dot dot;
+
+    // level camera
+    SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+
+    Menu* main_menu = NULL;
+    Menu* difficulty_menu = NULL;
+    Menu* pause_menu = NULL;
+
+    // maze to traverse
+    Maze* my_maze = NULL;
+
+    // tiles required for level
+    std::vector<Tile*> game_tiles;
+
+    // sprites from tile texture
+    SDL_Rect tile_sprites[TOTAL_TILE_SPRITES];
 };
 
 #endif

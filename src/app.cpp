@@ -132,44 +132,72 @@ bool App::set_tiles() {
     return tiles_loaded;
 }
 
+void App::render_tiles() {
+    // render each tile from level
+    for (int i = 0; i < TOTAL_TILES; i++) {
+        game_tiles[i]->render(camera, tile_texture, tile_sprites, renderer);
+    }
+}
+
 void App::close() {
     // free all tiles
-    for (int i = 0; i < TOTAL_TILES; i++) {
+    printf("Erasing all Tiles...\n");
+    for (unsigned i = 0; i < game_tiles.size(); i++) {
         if (game_tiles[i] != NULL) {
             delete game_tiles[i];
             game_tiles[i] = NULL;
         }
     }
     // Delete maze obj
-    delete my_maze; my_maze = NULL;
+    printf("Erasing Maze...\n");
+    if (my_maze != NULL) { delete my_maze; my_maze = NULL; }
+    printf("Erasing Main Menu...\n");
+    if (main_menu != NULL) { delete main_menu; main_menu = NULL; }
+    printf("Erasing Diff Menu...\n");
+    if (difficulty_menu != NULL) { delete difficulty_menu; difficulty_menu = NULL; }
+    printf("Erasing Pause Menu...\n");
+    if (pause_menu != NULL) { delete pause_menu; pause_menu = NULL; }
+
     //Free loaded images
+    printf("Erasing Textures...\n");
     dot_texture.free();
     tile_texture.free();
 
     //Destroy window	
+    printf("Erasing Window and Renderer...\n");
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     window = NULL;
     renderer = NULL;
 
     //Quit SDL subsystems
+    printf("Quitting SDL subsystems...\n");
     IMG_Quit();
     SDL_Quit();
 
-    printf("All processes exited successfully.\n");
+    printf("*** All processes exited successfully! ***\n");
 }
 
-void App::start() {
-    // load media
-    if (!load_media()) {
-        printf("Failed to load media!\n");
-        return;
-    }
-    bool quit = false;
+void App::set_menu() {
+    main_menu = new Menu("assets/media/png/default.png", SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
+    main_menu->set_main_image_dim(300, 200);
+    main_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
+    main_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
+    main_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
 
-    int level = 2;
+    difficulty_menu = new Menu(SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
+    difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
+    difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
+    difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
+    difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
 
-    if (level == 0) {
+    pause_menu = new Menu(SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
+    pause_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
+    pause_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
+}
+
+void App::set_level(int difficulty) {
+    if (difficulty == 0) {
         MAZE_DIM = 5;
 
         LEVEL_WIDTH = 1600;
@@ -177,7 +205,7 @@ void App::start() {
 
         TOTAL_TILES = 400;
     }
-    else if (level == 1) {
+    else if (difficulty == 1) {
         MAZE_DIM = 8;
 
         LEVEL_WIDTH = 2560;
@@ -185,7 +213,7 @@ void App::start() {
 
         TOTAL_TILES = 1024;
     }
-    else if (level == 2) {
+    else if (difficulty == 2) {
         MAZE_DIM = 10;
 
         LEVEL_WIDTH = 3200;
@@ -197,22 +225,85 @@ void App::start() {
         printf("Incompabile Difficulty!\n");
         return;
     }
+    if (my_maze == NULL) {
+        my_maze = new Maze(MAZE_DIM);
 
-    my_maze = new Maze(MAZE_DIM);
+        if (!set_tiles()) {
+            printf("Falied to set tiles!\n");
+            return;
+        }
+    }
+}
 
-    if (!set_tiles()) {
-        printf("Falied to set tiles!\n");
+void App::main_menu_handle_e() {
+    button_pressed = main_menu->handle_event(&e);
+    switch (button_pressed) {
+    case 0:
+        active_main_menu = false;
+        active_difficulty_menu = true;
+        break;
+    case 1:
+        printf("Select options\n");
+        break;
+    case 2:
+        quit = true;
+        break;
+    }
+}
+
+void App::diff_menu_handle_e() {
+    button_pressed = difficulty_menu->handle_event(&e);
+    switch (button_pressed) {
+    case 0:
+        printf("Easy Difficulty!\n");
+        set_level(0);
+        play = true;
+        active_difficulty_menu = false;
+        break;
+    case 1:
+        printf("Medium Difficulty!\n");
+        set_level(1);
+        play = true;
+        active_difficulty_menu = false;
+        break;
+    case 2:
+        printf("Difficult Difficulty!\n");
+        set_level(2);
+        play = true;
+        active_difficulty_menu = false;
+        break;
+    case 3:
+        active_main_menu = true;
+        active_difficulty_menu = false;
+        break;
+    }
+}
+
+void App::pause_menu_handle_e() {
+    button_pressed = pause_menu->handle_event(&e);
+    switch (button_pressed) {
+    case 0:
+        play = true;
+        active_pause_menu = false;
+        break;
+    case 1:
+        quit = true;
+        break;
+    }
+}
+
+void App::player_handle_e() {
+    dot.handle_event(e);
+}
+
+void App::start() {
+    // load media
+    if (!load_media()) {
+        printf("Failed to load media!\n");
         return;
     }
 
-    //Event handler
-    SDL_Event e;
-
-    // dot moving around the screen
-    Dot dot;
-
-    // level camera
-    SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+    set_menu();
 
     //app running
     while (!quit) {
@@ -222,26 +313,51 @@ void App::start() {
             if (e.type == SDL_QUIT) {
                 quit = true;
             }
-
-            // handle input
-            dot.handle_event(e);
+            else if (active_main_menu) {
+                main_menu_handle_e();
+            }
+            else if (active_difficulty_menu) {
+                diff_menu_handle_e();
+            }
+            else if (play) {
+                player_handle_e();
+                if (e.type == SDL_KEYDOWN) {
+                    if (e.key.keysym.sym == SDLK_ESCAPE) {
+                        play = false;
+                        active_pause_menu = true;
+                    }
+                }
+            }
+            else if (active_pause_menu) {
+                pause_menu_handle_e();
+            }
         }
-        // move dot
-        dot.move(LEVEL_WIDTH, LEVEL_HEIGHT, TOTAL_TILES, game_tiles);
-        dot.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);
-
         //Clear screen
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
 
-        // render each tile from level
-        for (int i = 0; i < TOTAL_TILES; i++) {
-            game_tiles[i]->render(camera, tile_texture, tile_sprites, renderer);
+        if (active_main_menu) {
+            main_menu->render();
         }
+        else if (active_difficulty_menu) {
+            difficulty_menu->render();
+        }
+        else if (active_pause_menu) {
+            pause_menu->render();
+        }
+        else if (play) {
+            // move dot
+            dot.move(LEVEL_WIDTH, LEVEL_HEIGHT, TOTAL_TILES, game_tiles);
+            if (dot.check_win(LEVEL_WIDTH, LEVEL_HEIGHT)) {
+                printf("Player has won!\n");
+            }
+            dot.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);
 
-        // render the dot
-        dot.render(dot_texture, camera, renderer);
+            render_tiles();
 
+            // render the dot
+            dot.render(dot_texture, camera, renderer);
+        }
         //Update screen
         SDL_RenderPresent(renderer);
     }
