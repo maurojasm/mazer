@@ -37,7 +37,7 @@ public:
     @param height       height of menu item. If not specified, set to height of image
     @param texture_path path of image to create texture. If not specified, set to default image
     */
-    void add_option(int width = 0, int height = 0, string texture_path = "assets/option_button.png");
+    void add_option(int width = 0, int height = 0, string texture_path = "assets/media/png/menu/option_button.png");
 
     /*
     Renders all items in the menu, including main image (logo) if it exits.
@@ -85,7 +85,7 @@ private:
     int last_x, last_y;
 
     // default background image path
-    string background_path = "assets/grey_background.png";
+    string background_path = "assets/media/png/menu/grey_background.png";
 
     // menu textures
     Texture main_image;

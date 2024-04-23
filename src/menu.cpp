@@ -62,6 +62,7 @@ void Menu::add_option(int width, int height, string texture_path) {
     // set new location based on last item
     int new_x = (this->width / 2) - (new_option->get_texture_width() / 2);
     int new_y = last_y + 10; // add 10px offset
+
     new_option->set_position(new_x, new_y);
 
     // update last location
@@ -94,11 +95,7 @@ int Menu::handle_event(SDL_Event* e) {
 }
 
 void Menu::render_items() {
-    //int center_x = (width / 2), center_y = 40 + (main_image.get_height() / 2);
     for (unsigned i = 0; i < menu_items.size(); i++) {
-        // center_x = (width / 2) - menu_items[i]->get_texture_width() / 2;
-        // menu_items[i]->set_position(center_x, center_y);
-
         SDL_Rect renderQuad = { menu_items[i]->get_x(),
                                 menu_items[i]->get_y(),
                                 menu_items[i]->get_texture_width(),
