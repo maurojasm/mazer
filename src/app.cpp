@@ -61,12 +61,13 @@ bool App::load_media() {
     bool success = true;
 
     // load dot texture
-    int rgb[] = { 0x00, 0xFF, 0xFF };
+    int rgb[] = { 0x00, 0xFF, 0xFF }; // color values to make transparent
     if (!dot_texture.load_from_file("assets/media/bmp/dot.bmp", renderer, true, rgb)) {
         printf("Falied to load dot texture!\n");
         success = false;
         return success;
     }
+    // load tile texture
     if (!tile_texture.load_from_file("assets/media/png/tiles/tiles.png", renderer)) {
         printf("Falied to load tile texture!\n");
         success = false;
@@ -91,6 +92,7 @@ bool App::set_tiles() {
         int tile_type = -1;
         tile_type = map[i] - '0';
 
+        // check if tile type is correct
         if (tile_type >= 0 && tile_type < TOTAL_TILE_SPRITES) {
             game_tiles.push_back(new Tile(x, y, tile_type));
         } //If we don't recognize the tile type
@@ -133,7 +135,7 @@ bool App::set_tiles() {
 }
 
 void App::render_tiles() {
-    // render each tile from level
+    // render each tile from level in camera's field of view
     for (int i = 0; i < TOTAL_TILES; i++) {
         game_tiles[i]->render(camera, tile_texture, tile_sprites, renderer);
     }
@@ -141,37 +143,37 @@ void App::render_tiles() {
 
 void App::close() {
     // free all tiles
-    printf("Erasing all Tiles...\n");
+    printf("-- Erasing all Tiles...\n");
     for (unsigned i = 0; i < game_tiles.size(); i++) {
         if (game_tiles[i] != NULL) {
             delete game_tiles[i];
             game_tiles[i] = NULL;
         }
     }
-    // Delete maze obj
-    printf("Erasing Maze...\n");
+    // Delete maze and menu objects
+    printf("-- Erasing Maze...\n");
     if (my_maze != NULL) { delete my_maze; my_maze = NULL; }
-    printf("Erasing Main Menu...\n");
+    printf("-- Erasing Main Menu...\n");
     if (main_menu != NULL) { delete main_menu; main_menu = NULL; }
-    printf("Erasing Diff Menu...\n");
+    printf("-- Erasing Diff Menu...\n");
     if (difficulty_menu != NULL) { delete difficulty_menu; difficulty_menu = NULL; }
-    printf("Erasing Pause Menu...\n");
+    printf("-- Erasing Pause Menu...\n");
     if (pause_menu != NULL) { delete pause_menu; pause_menu = NULL; }
 
     //Free loaded images
-    printf("Erasing Textures...\n");
+    printf("-- Erasing Textures...\n");
     dot_texture.free();
     tile_texture.free();
 
-    //Destroy window	
-    printf("Erasing Window and Renderer...\n");
+    //Destroy window and renderer
+    printf("-- Erasing Window and Renderer...\n");
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     window = NULL;
     renderer = NULL;
 
     //Quit SDL subsystems
-    printf("Quitting SDL subsystems...\n");
+    printf("-- Quitting SDL subsystems...\n");
     IMG_Quit();
     SDL_Quit();
 
@@ -179,25 +181,32 @@ void App::close() {
 }
 
 void App::set_menu() {
+    // create main menu that covers all the screen
     main_menu = new Menu("assets/media/png/default.png", SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
+    // resize logo to specific dimention
     main_menu->set_main_image_dim(300, 200);
+    // add options
     main_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
     main_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
     main_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
 
+    // create diff menu with no logo that covers all the screen
     difficulty_menu = new Menu(SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
+    // add options 
     difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
     difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
     difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
     difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
 
+    // create pause menu with no logo that covers all the screen
     pause_menu = new Menu(SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
+    // add options
     pause_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
     pause_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
 }
 
 void App::set_level(int difficulty) {
-    if (difficulty == 0) {
+    if (difficulty == 0) { // easy 5x5 maze
         MAZE_DIM = 5;
 
         LEVEL_WIDTH = 1600;
@@ -205,7 +214,7 @@ void App::set_level(int difficulty) {
 
         TOTAL_TILES = 400;
     }
-    else if (difficulty == 1) {
+    else if (difficulty == 1) { // medium 8x8 maze
         MAZE_DIM = 8;
 
         LEVEL_WIDTH = 2560;
@@ -213,7 +222,7 @@ void App::set_level(int difficulty) {
 
         TOTAL_TILES = 1024;
     }
-    else if (difficulty == 2) {
+    else if (difficulty == 2) { // hard 10x10 maze
         MAZE_DIM = 10;
 
         LEVEL_WIDTH = 3200;
@@ -225,10 +234,10 @@ void App::set_level(int difficulty) {
         printf("Incompabile Difficulty!\n");
         return;
     }
-    if (my_maze == NULL) {
+    if (my_maze == NULL) { // create maze object
         my_maze = new Maze(MAZE_DIM);
 
-        if (!set_tiles()) {
+        if (!set_tiles()) { // set tiles to specific level
             printf("Falied to set tiles!\n");
             return;
         }
@@ -236,43 +245,47 @@ void App::set_level(int difficulty) {
 }
 
 void App::main_menu_handle_e() {
+    // get which button was pressed
     button_pressed = main_menu->handle_event(&e);
+
     switch (button_pressed) {
-    case 0:
+    case 0: // start game, show difficulty menu
         active_main_menu = false;
         active_difficulty_menu = true;
         break;
-    case 1:
+    case 1: // @todo shows options menu
         printf("Select options\n");
         break;
-    case 2:
+    case 2: // exit the game
         quit = true;
         break;
     }
 }
 
 void App::diff_menu_handle_e() {
+    // get which button was pressed
     button_pressed = difficulty_menu->handle_event(&e);
+
     switch (button_pressed) {
-    case 0:
+    case 0: // easy difficulty
         printf("Easy Difficulty!\n");
         set_level(0);
         play = true;
         active_difficulty_menu = false;
         break;
-    case 1:
+    case 1: // medium difficulty
         printf("Medium Difficulty!\n");
         set_level(1);
         play = true;
         active_difficulty_menu = false;
         break;
-    case 2:
+    case 2: // hard difficulty
         printf("Difficult Difficulty!\n");
         set_level(2);
         play = true;
         active_difficulty_menu = false;
         break;
-    case 3:
+    case 3: // goes back to main menu
         active_main_menu = true;
         active_difficulty_menu = false;
         break;
@@ -280,19 +293,22 @@ void App::diff_menu_handle_e() {
 }
 
 void App::pause_menu_handle_e() {
+    // get which button was pressed
     button_pressed = pause_menu->handle_event(&e);
+
     switch (button_pressed) {
-    case 0:
+    case 0: // resume game
         play = true;
         active_pause_menu = false;
         break;
-    case 1:
+    case 1: // quit game
         quit = true;
         break;
     }
 }
 
 void App::player_handle_e() {
+    // player object handles event 
     dot.handle_event(e);
 }
 
@@ -302,7 +318,6 @@ void App::start() {
         printf("Failed to load media!\n");
         return;
     }
-
     set_menu();
 
     //app running
@@ -321,6 +336,7 @@ void App::start() {
             }
             else if (play) {
                 player_handle_e();
+                // check for pause
                 if (e.type == SDL_KEYDOWN) {
                     if (e.key.keysym.sym == SDLK_ESCAPE) {
                         play = false;
@@ -336,6 +352,7 @@ void App::start() {
         SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(renderer);
 
+        // render active game state
         if (active_main_menu) {
             main_menu->render();
         }
@@ -348,9 +365,11 @@ void App::start() {
         else if (play) {
             // move dot
             dot.move(LEVEL_WIDTH, LEVEL_HEIGHT, TOTAL_TILES, game_tiles);
+            // check if player has won
             if (dot.check_win(LEVEL_WIDTH, LEVEL_HEIGHT)) {
                 printf("Player has won!\n");
             }
+            // set camera over player
             dot.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);
 
             render_tiles();
