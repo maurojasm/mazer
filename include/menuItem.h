@@ -1,21 +1,7 @@
 #include "texture.h"
-// #include <iostream>
 
 using std::string;
-/*
-class item {
-protected:
-    int x;
-    int y;
-    int width;
-    int height;
 
-public:
-    MenuItem(int x, int y, int width, int height);
-    ~MenuItem();
-    bool checkBounds(int posX, int posY);
-};
-*/
 class MenuItem {
 public:
     MenuItem(string path, SDL_Renderer* renderer, int width = 0, int height = 0);

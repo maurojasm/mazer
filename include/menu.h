@@ -11,6 +11,7 @@ class Menu {
 public:
     /*
     Class constructor. Menu contains main image (logo), usually for main menu.
+
     @param main_image_path  main image (logo) path to load
     @param width            width of menu
     @param height           height of menu
@@ -20,6 +21,7 @@ public:
 
     /*
     (overload) Class constructor. Menu does not have a main image (logo).
+
     @param width            width of menu
     @param height           height of menu
     @param renderer         pointer to desired renderer
@@ -33,6 +35,7 @@ public:
 
     /*
     Adds MenuItem to Menu.
+
     @param width        witdh of menu item. If not specified, set to width of image
     @param height       height of menu item. If not specified, set to height of image
     @param texture_path path of image to create texture. If not specified, set to default image
@@ -46,13 +49,15 @@ public:
 
     /*
     Passes event to menu items for interactivity and returns which item was pressed
+
     @param e SDL event to be handle
-    @return item which was pressed. -1 if non was
+    @return item which was pressed. -1 if none was
     */
     int handle_event(SDL_Event* e);
 
     /*
-    Sets main image (logo) dimension
+    Sets main image (logo) dimension.
+
     @param width    new width to be set
     @param height   new height to be set
     */

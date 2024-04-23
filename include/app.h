@@ -14,6 +14,9 @@
 #include "maze.h"
 #include "menu.h"
 
+/*
+Game App
+*/
 class App {
 public:
     /*

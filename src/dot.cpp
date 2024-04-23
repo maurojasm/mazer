@@ -15,7 +15,7 @@ Dot::Dot() {
 }
 
 void Dot::handle_event(SDL_Event& e) {
-    // if key was pressed
+    // if key was pressed add velocity
     if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
         // adjust the velocity
         switch (e.key.keysym.sym) {
@@ -25,7 +25,7 @@ void Dot::handle_event(SDL_Event& e) {
         case SDLK_RIGHT: x_vel += max_vel; break;
         }
     }
-    // if key was released
+    // if key was released remove velocity
     if (e.type == SDL_KEYUP && e.key.repeat == 0) {
         // adjust the velocity
         switch (e.key.keysym.sym) {
@@ -41,8 +41,8 @@ void Dot::move(int LEVEL_HEIGHT, int LEVEL_WIDTH, int TOTAL_TILES, std::vector<T
     // move dot left or right
     hit_box.x += x_vel;
 
-    // check screen bounds
-    if (hit_box.x < 0 || hit_box.x + d_width > LEVEL_WIDTH || touches_wall(hit_box, game_tiles, TOTAL_TILES)) {
+    // check screen bounds or touches wall
+    if (hit_box.x < 0 || hit_box.x + d_width > LEVEL_WIDTH || touches_wall(game_tiles, TOTAL_TILES)) {
         // move back
         hit_box.x -= x_vel;
     }
@@ -50,8 +50,8 @@ void Dot::move(int LEVEL_HEIGHT, int LEVEL_WIDTH, int TOTAL_TILES, std::vector<T
     // move dot up or down
     hit_box.y += y_vel;
 
-    // check screen bounds
-    if (hit_box.y < 0 || hit_box.y + d_height > LEVEL_HEIGHT || touches_wall(hit_box, game_tiles, TOTAL_TILES)) {
+    // check screen bounds or touches wall
+    if (hit_box.y < 0 || hit_box.y + d_height > LEVEL_HEIGHT || touches_wall(game_tiles, TOTAL_TILES)) {
         // move back
         hit_box.y -= y_vel;
     }
@@ -63,9 +63,7 @@ void Dot::render(Texture& dot_texture, SDL_Rect& camera, SDL_Renderer* renderer)
     dot_texture.render(hit_box.x - camera.x, hit_box.y - camera.y, renderer);
 }
 
-void Dot::set_camera(SDL_Rect& camera, int SCREEN_WIDTH,
-    int SCREEN_HEIGHT, int LEVEL_WIDTH,
-    int LEVEL_HEIGHT) {
+void Dot::set_camera(SDL_Rect& camera, int SCREEN_WIDTH, int SCREEN_HEIGHT, int LEVEL_WIDTH, int LEVEL_HEIGHT) {
     //Center the camera over the dot
     camera.x = (hit_box.x + d_width / 2) - SCREEN_WIDTH / 2;
     camera.y = (hit_box.y + d_height / 2) - SCREEN_HEIGHT / 2;
@@ -81,7 +79,7 @@ void Dot::set_camera(SDL_Rect& camera, int SCREEN_WIDTH,
     }
 }
 
-bool Dot::touches_wall(SDL_Rect hit_box, std::vector<Tile*> game_tiles, int TOTAL_TILES) {
+bool Dot::touches_wall(std::vector<Tile*> game_tiles, int TOTAL_TILES) {
     // check all tiles
     for (int i = 0; i < TOTAL_TILES; i++) {
         // if tile is a wall type
@@ -96,6 +94,7 @@ bool Dot::touches_wall(SDL_Rect hit_box, std::vector<Tile*> game_tiles, int TOTA
 }
 
 bool Dot::check_win(int LEVEL_WIDTH, int LEVEL_HEIGHT) {
+    // check if player is in the "win zone"
     if ((hit_box.x > LEVEL_WIDTH - 40) && (hit_box.y > LEVEL_HEIGHT - 320)) {
         return true;
     }
