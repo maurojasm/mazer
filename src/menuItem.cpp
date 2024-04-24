@@ -1,24 +1,4 @@
 #include "../include/menuItem.h"
-/*
-MenuItem::MenuItem(int x, int y, int width, int height) {
-    this->x = x;
-    this->y = y;
-    this->width = width;
-    this->height = height;
-}
-
-MenuItem::~MenuItem() {
-}
-
-bool MenuItem::checkBounds(int posX, int posY) {
-    if (posX >= x && posX <= x + width) {
-        if (posY >= y && posY <= y + height) {
-            return true;
-        }
-    }
-    return false;
-}
-*/
 
 MenuItem::MenuItem(string path, SDL_Renderer* renderer, int width, int height) {
     item_renderer = renderer;
@@ -56,28 +36,27 @@ void MenuItem::render(SDL_Rect* clip, SDL_Rect* renderQuad) {
 }
 
 bool MenuItem::handle_event(SDL_Event* e) {
-    //If mouse event happened
+    // if mouse event happened
     if (e->type == SDL_MOUSEMOTION || e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP) {
         //Get mouse position
         int m_x, m_y;
         SDL_GetMouseState(&m_x, &m_y);
 
-        //Check if mouse is in button
+        // Check if mouse is inside button
         bool inside = false;
-
-        if ((m_x > x && m_x < x + item_width) && (m_y > y && m_y < y + item_height)) {
+        if (((m_x > x) && (m_x < x + item_width)) && ((m_y > y) && (m_y < y + item_height))) {
             inside = true;
         }
 
-        if (inside) {
+        if (inside) { // change color to show interactivity
             item_texture.set_color(255, 128, 255);
-            switch (e->type) {
 
+            switch (e->type) { // if mouse inside and is pressed
             case SDL_MOUSEBUTTONDOWN:
                 return true;
-                // break;
             }
         }
+        // mouse not inside, revert to original color
         else { item_texture.set_color(255, 255, 255); }
     }
     return false;

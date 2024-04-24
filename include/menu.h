@@ -7,6 +7,9 @@
 using std::vector;
 using std::string;
 
+/*
+Holds a list of MenuItems to interact with and an optional main image (logo).
+*/
 class Menu {
 public:
     /*
