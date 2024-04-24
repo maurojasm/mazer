@@ -10,6 +10,7 @@ Checks collision between two SDL_Rect.
 
 @param a first box to check
 @param b second box to check
+@return true if boxes collide
 */
 inline bool check_collision(SDL_Rect a, SDL_Rect b) {
     //The sides of the rectangles

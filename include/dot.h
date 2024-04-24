@@ -71,6 +71,7 @@ public:
 
     @param LEVEL_WIDTH  width of the level
     @param LEVEL_HEIGHT height of the level
+    @return true if player is in "win zone"
     */
     bool check_win(int LEVEL_WIDTH, int LEVEL_HEIGHT);
 

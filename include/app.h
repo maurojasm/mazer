@@ -36,11 +36,15 @@ public:
 private:
     /*
     Loads initial assets such as game character and tiles png to create their textures.
+
+    @return true if media was loaded successfully
     */
     bool load_media();
 
     /*
     Starts SDL subprocesses and creates window and renderer. Preset to this game specifications.
+
+    @return true if initialization was successfull
     */
     bool init();
 
@@ -52,6 +56,8 @@ private:
 
     /*
     Creates objects for each tile in the level map and sets the tiles sprites.
+
+    @return true if success
     */
     bool set_tiles();
 
