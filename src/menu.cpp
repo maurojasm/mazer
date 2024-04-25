@@ -1,6 +1,12 @@
 #include "../include/menu.h"
 
-Menu::Menu(string main_image_path, int width, int height, SDL_Renderer* renderer) {
+Menu::Menu(string main_image_path, int m_width, int m_height, SDL_Renderer* renderer) {
+    // set menu dimesions
+    this->m_width = m_width;
+    this->m_height = m_height;
+    // set renderer
+    m_renderer = renderer;
+
     int rgb[3] = { 0xFF, 0xFF, 0xFF }; // values of white to be removed from main image
     // load main image (logo)
     if (!main_image.load_from_file(main_image_path, renderer, true, rgb)) {
@@ -12,11 +18,7 @@ Menu::Menu(string main_image_path, int width, int height, SDL_Renderer* renderer
         // set flag
         is_main_image = true;
         // set dimensions
-        mi_width = main_image.get_width();
-        mi_height = main_image.get_height();
-        // set location
-        mi_x = (width / 2) - (main_image.get_width() / 2); // centered on x
-        mi_y = 10; // 10px offset from boundary
+        set_main_image_dim(main_image.get_width(), main_image.get_height());
     }
     // load background image
     if (!background.load_from_file(background_path, renderer)) {
@@ -24,16 +26,9 @@ Menu::Menu(string main_image_path, int width, int height, SDL_Renderer* renderer
         printf("*** SDL_image Error: %s ***\n", IMG_GetError());
         exit(1);
     }
-    // set menu dimesions
-    this->width = width;
-    this->height = height;
-    // set renderer
-    m_renderer = renderer;
-    // set last item location
-    last_x = mi_x; last_y = mi_y + main_image.get_height();
 }
 
-Menu::Menu(int width, int height, SDL_Renderer* renderer) {
+Menu::Menu(int m_width, int m_height, SDL_Renderer* renderer) {
     // load background image
     if (!background.load_from_file(background_path, renderer)) {
         printf("Error loading menu's background from %s!\n", background_path.c_str());
@@ -41,12 +36,10 @@ Menu::Menu(int width, int height, SDL_Renderer* renderer) {
         exit(1);
     }
     // set menu dimensions
-    this->width = width;
-    this->height = height;
+    this->m_width = m_width;
+    this->m_height = m_height;
     // set renderer
     m_renderer = renderer;
-    // set last item location
-    last_x = 0; last_y = 0;
 }
 
 Menu::~Menu() {
@@ -64,27 +57,41 @@ Menu::~Menu() {
 void Menu::add_option(int width, int height, string texture_path) {
     // create menu item
     MenuItem* new_option = new MenuItem(texture_path, m_renderer, width, height);
-    // set new location based on last item
-    int new_x = (this->width / 2) - (new_option->get_texture_width() / 2);
-    int new_y = last_y + 10; // add 10px offset
-
-    new_option->set_position(new_x, new_y);
-
-    // update last location
-    last_x = new_x; last_y = new_y + new_option->get_texture_height();
-
+    // added to list of menu items
     menu_items.push_back(new_option);
+    // rearrage all items in the menu to center them
+    rearrange_items();
 }
 
-void Menu::set_main_image_dim(int width, int height) {
-    this->mi_width = width;
-    this->mi_height = height;
-    // reset location
-    this->mi_x = (this->width / 2) - (mi_width / 2);
-    this->mi_y = 10;
-    // reset last location
-    this->last_x = mi_x;
-    this->last_y = mi_y + height;
+void Menu::rearrange_items() {
+    // total height of all items and offsets
+    unsigned total_height = 0;
+    // if we have a main image add it's height
+    if (is_main_image) {
+        total_height += mi_height;
+    }
+    // add height offset and item height to total height
+    for (unsigned i = 0; i < menu_items.size(); i++) {
+        total_height += h_offset + menu_items[i]->get_texture_height();
+    }
+    // set main image location
+    mi_x = (m_width / 2) - (mi_width / 2);
+    mi_y = (m_height / 2) - (total_height / 2);
+    // record end of main image
+    unsigned last_y = mi_y + mi_height;
+    // reset all items positions
+    for (unsigned j = 0; j < menu_items.size(); j++) {
+        last_y += h_offset;
+        menu_items[j]->set_position((m_width / 2) - (menu_items[j]->get_texture_width() / 2), last_y);
+        last_y += menu_items[j]->get_texture_height();
+    }
+}
+
+void Menu::set_main_image_dim(int new_width, int new_height) {
+    this->mi_width = new_width;
+    this->mi_height = new_height;
+    // reset all items locations
+    rearrange_items();
 }
 
 void Menu::render_main_image() {
@@ -115,7 +122,7 @@ void Menu::render_items() {
 }
 
 void Menu::render() {
-    background.render(x, y, m_renderer);
+    background.render(m_x, m_y, m_renderer);
     if (is_main_image) { render_main_image(); }
     render_items();
 }
