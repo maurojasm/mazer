@@ -20,7 +20,7 @@ public:
     @param height           height of menu
     @param renderer         pointer to desired renderer
     */
-    Menu(string main_image_path, int width, int height, SDL_Renderer* renderer);
+    Menu(string main_image_path, int m_width, int m_height, SDL_Renderer* renderer);
 
     /*
     (overload) Class constructor. Menu does not have a main image (logo).
@@ -29,7 +29,7 @@ public:
     @param height           height of menu
     @param renderer         pointer to desired renderer
     */
-    Menu(int width, int height, SDL_Renderer* renderer);
+    Menu(int m_width, int m_height, SDL_Renderer* renderer);
 
     /*
     Class destructor. Deletes all menu items and frees menu textures.
@@ -43,7 +43,7 @@ public:
     @param height       height of menu item. If not specified, set to height of image
     @param texture_path path of image to create texture. If not specified, set to default image
     */
-    void add_option(int width = 0, int height = 0, string texture_path = "assets/media/png/menu/option_button.png");
+    void add_option(int op_width = 0, int op_height = 0, string texture_path = "assets/media/png/menu/option_button.png");
 
     /*
     Renders all items in the menu, including main image (logo) if it exits.
@@ -64,7 +64,7 @@ public:
     @param width    new width to be set
     @param height   new height to be set
     */
-    void set_main_image_dim(int width, int height);
+    void set_main_image_dim(int new_width, int new_height);
 
 private:
     /*
@@ -77,20 +77,22 @@ private:
     */
     void render_items();
 
+    /*
+    Rearranges the positions of the logo and menu items to center all of them.
+    */
+    void rearrange_items();
+
     // menu dimensions
-    int width, height;
+    int m_width, m_height;
     // menu location
-    int x = 0, y = 0;
+    int m_x = 0, m_y = 0;
 
     // flag for main image (logo)
     bool is_main_image = false;
     // main image dimensions
     int mi_width, mi_height;
     // main image location
-    int mi_x, mi_y;
-
-    // location of last item in menu
-    int last_x, last_y;
+    int mi_x = 0, mi_y = 0;
 
     // default background image path
     string background_path = "assets/media/png/menu/grey_background.png";
@@ -104,4 +106,7 @@ private:
 
     // list of menu items
     vector<MenuItem*> menu_items;
+
+    // height offset between menu items
+    int h_offset = 10;
 };
