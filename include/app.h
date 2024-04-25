@@ -62,6 +62,11 @@ private:
     bool set_tiles();
 
     /*
+    Deletes all tiles objects in the level and resets vector to size 0.
+    */
+    void erase_tiles();
+
+    /*
     Renders all tiles inside of the camera view.
     */
     void render_tiles();

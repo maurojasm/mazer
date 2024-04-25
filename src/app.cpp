@@ -78,6 +78,8 @@ bool App::load_media() {
 }
 
 bool App::set_tiles() {
+    // delete current tiles
+    erase_tiles();
     // success flag
     bool tiles_loaded = true;
 
@@ -134,6 +136,18 @@ bool App::set_tiles() {
     return tiles_loaded;
 }
 
+void App::erase_tiles() {
+    if (game_tiles.size() == 0) { return; }
+
+    for (unsigned i = 0; i < game_tiles.size(); i++) {
+        if (game_tiles[i] != NULL) {
+            delete game_tiles[i];
+            game_tiles[i] = NULL;
+        }
+    }
+    game_tiles.clear();
+}
+
 void App::render_tiles() {
     // render each tile from level in camera's field of view
     for (int i = 0; i < TOTAL_TILES; i++) {
@@ -144,12 +158,7 @@ void App::render_tiles() {
 void App::close() {
     // free all tiles
     printf("-- Erasing all Tiles...\n");
-    for (unsigned i = 0; i < game_tiles.size(); i++) {
-        if (game_tiles[i] != NULL) {
-            delete game_tiles[i];
-            game_tiles[i] = NULL;
-        }
-    }
+    erase_tiles();
     // Delete maze and menu objects
     printf("-- Erasing Maze...\n");
     if (my_maze != NULL) { delete my_maze; my_maze = NULL; }
@@ -192,15 +201,16 @@ void App::set_menu() {
 
     // create diff menu with no logo that covers all the screen
     difficulty_menu = new Menu(SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
-    // add options 
+    // // add options 
     difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
     difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
     difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
     difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
 
-    // create pause menu with no logo that covers all the screen
+    // // create pause menu with no logo that covers all the screen
     pause_menu = new Menu(SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
-    // add options
+    // // add options
+    pause_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
     pause_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
     pause_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
 }
@@ -241,6 +251,18 @@ void App::set_level(int difficulty) {
             printf("Falied to set tiles!\n");
             return;
         }
+    }
+    else {
+        delete my_maze;
+        my_maze = new Maze(MAZE_DIM);
+
+        if (!set_tiles()) { // set tiles to specific level
+            printf("Falied to set tiles!\n");
+            return;
+        }
+
+        // reset dot location
+        dot.reset_location();
     }
 }
 
@@ -301,7 +323,13 @@ void App::pause_menu_handle_e() {
         play = true;
         active_pause_menu = false;
         break;
-    case 1: // quit game
+    case 1:
+        play = false;
+        active_main_menu = true;
+        active_difficulty_menu = false;
+        active_pause_menu = false;
+        break;
+    case 2: // quit game
         quit = true;
         break;
     }
