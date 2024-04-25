@@ -100,3 +100,8 @@ bool Dot::check_win(int LEVEL_WIDTH, int LEVEL_HEIGHT) {
     }
     return false;
 }
+
+void Dot::reset_location() {
+    hit_box.x = 0;
+    hit_box.y = 160;
+}

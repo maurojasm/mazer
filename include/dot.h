@@ -75,6 +75,11 @@ public:
     */
     bool check_win(int LEVEL_WIDTH, int LEVEL_HEIGHT);
 
+    /*
+    Resets location.
+    */
+    void reset_location();
+
 private:
     // dot dimensions
     static const int d_height = 20;
