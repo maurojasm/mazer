@@ -66,6 +66,13 @@ public:
     */
     void set_main_image_dim(int new_width, int new_height);
 
+    /*
+    Sets height offset between menu items.
+
+    @param offset height offset in pixel count
+    */
+    void set_offset(int offset) { this->h_offset = offset; }
+
 private:
     /*
     Render main image of the menu (usually logo)
@@ -95,7 +102,7 @@ private:
     int mi_x = 0, mi_y = 0;
 
     // default background image path
-    string background_path = "assets/media/png/menu/grey_background.png";
+    string background_path = "assets/media/png/menu/background.png";
 
     // menu textures
     Texture main_image;

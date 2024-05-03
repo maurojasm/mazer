@@ -122,7 +122,8 @@ void Menu::render_items() {
 }
 
 void Menu::render() {
-    background.render(m_x, m_y, m_renderer);
+    SDL_Rect renderQuad = { m_x, m_y, m_width, m_height };
+    background.render(m_x, m_y, m_renderer, NULL, &renderQuad);
     if (is_main_image) { render_main_image(); }
     render_items();
 }

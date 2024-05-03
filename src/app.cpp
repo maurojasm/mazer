@@ -190,29 +190,48 @@ void App::close() {
 }
 
 void App::set_menu() {
+    // image ratios and dimesions
+    double mi_ratio = 2.83, new_g_ratio = 5.97, op_ratio = 3.4, ex_ratio = 2.16;
+    int mi_width = 600, mi_height = mi_width / mi_ratio,
+        ng_w = SCREEN_WIDTH / 3.5, ng_h = ng_w / new_g_ratio,
+        op_w = SCREEN_WIDTH / 5, op_h = op_w / op_ratio,
+        ex_w = SCREEN_WIDTH / 8, ex_h = ex_w / ex_ratio;
     // create main menu that covers all the screen
-    main_menu = new Menu("assets/media/png/default.png", SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
+    main_menu = new Menu("assets/media/png/menu/logo.png", SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
     // resize logo to specific dimention
-    main_menu->set_main_image_dim(300, 200);
+    main_menu->set_main_image_dim(mi_width, mi_height);
+    // set menu height offset
+    main_menu->set_offset(50);
     // add options
-    main_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
-    main_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
-    main_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
+    main_menu->add_option(ng_w, ng_h, "assets/media/png/menu/new_game.png");
+    main_menu->add_option(op_w, op_h, "assets/media/png/menu/options.png");
+    main_menu->add_option(ex_w, ex_h, "assets/media/png/menu/exit.png");
 
+    double ea_ratio = 2.23, md_ratio = 4.9, hd_ratio = 2.99, mm_ratio = 6.27;
+    int mm_w = SCREEN_WIDTH / 3.5, mm_h = mm_w / mm_ratio,
+        ea_w = SCREEN_WIDTH / 8, ea_h = ea_w / ea_ratio,
+        md_w = SCREEN_WIDTH / 5, md_h = md_w / md_ratio,
+        hd_w = SCREEN_WIDTH / 8, hd_h = hd_w / hd_ratio;
     // create diff menu with no logo that covers all the screen
     difficulty_menu = new Menu(SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
-    // // add options 
-    difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
-    difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
-    difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
-    difficulty_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
+    // set menu height offset
+    difficulty_menu->set_offset(50);
+    // add options
+    difficulty_menu->add_option(ea_w, ea_h, "assets/media/png/menu/easy.png"); // easy
+    difficulty_menu->add_option(md_w, md_h, "assets/media/png/menu/medium.png"); // medium
+    difficulty_menu->add_option(hd_w, hd_h, "assets/media/png/menu/hard.png"); // hard
+    difficulty_menu->add_option(mm_w, mm_h, "assets/media/png/menu/main_menu.png"); // main menu
 
-    // // create pause menu with no logo that covers all the screen
+    double con_ratio = 5.35;
+    int con_w = SCREEN_WIDTH / 5, con_h = con_w / con_ratio;
+    // create pause menu with no logo that covers all the screen
     pause_menu = new Menu(SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
-    // // add options
-    pause_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
-    pause_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
-    pause_menu->add_option(SCREEN_WIDTH / 3.5, SCREEN_HEIGHT / 5);
+    // set menu height offset
+    pause_menu->set_offset(50);
+    // add options
+    pause_menu->add_option(con_w, con_h, "assets/media/png/menu/continue.png"); // continue
+    pause_menu->add_option(mm_w, mm_h, "assets/media/png/menu/main_menu.png"); // main menu
+    pause_menu->add_option(ex_w, ex_h, "assets/media/png/menu/exit.png"); // exit
 }
 
 void App::set_level(int difficulty) {

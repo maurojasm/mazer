@@ -49,7 +49,7 @@ bool MenuItem::handle_event(SDL_Event* e) {
         }
 
         if (inside) { // change color to show interactivity
-            item_texture.set_color(255, 128, 255);
+            item_texture.set_color(151, 35, 53);
 
             switch (e->type) { // if mouse inside and is pressed
             case SDL_MOUSEBUTTONDOWN:
