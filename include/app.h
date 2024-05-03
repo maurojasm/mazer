@@ -122,6 +122,9 @@ private:
     // default maze dimensions
     int MAZE_DIM = 5;
 
+    // default difficulty
+    int curr_diff = 0; // easy
+
     // flags
     bool quit = false,
         active_main_menu = true,

@@ -310,19 +310,22 @@ void App::diff_menu_handle_e() {
     switch (button_pressed) {
     case 0: // easy difficulty
         printf("Easy Difficulty!\n");
-        set_level(0);
+        curr_diff = 0;
+        set_level(curr_diff);
         play = true;
         active_difficulty_menu = false;
         break;
     case 1: // medium difficulty
         printf("Medium Difficulty!\n");
-        set_level(1);
+        curr_diff = 1;
+        set_level(curr_diff);
         play = true;
         active_difficulty_menu = false;
         break;
     case 2: // hard difficulty
         printf("Difficult Difficulty!\n");
-        set_level(2);
+        curr_diff = 2;
+        set_level(curr_diff);
         play = true;
         active_difficulty_menu = false;
         break;
@@ -415,6 +418,7 @@ void App::start() {
             // check if player has won
             if (dot.check_win(LEVEL_WIDTH, LEVEL_HEIGHT)) {
                 printf("Player has won!\n");
+                set_level(curr_diff);
             }
             // set camera over player
             dot.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);
