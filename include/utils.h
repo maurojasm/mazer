@@ -5,6 +5,13 @@
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
 
+/*
+Checks collision between two SDL_Rect.
+
+@param a first box to check
+@param b second box to check
+@return true if boxes collide
+*/
 inline bool check_collision(SDL_Rect a, SDL_Rect b) {
     //The sides of the rectangles
     int leftA, leftB;
@@ -25,23 +32,19 @@ inline bool check_collision(SDL_Rect a, SDL_Rect b) {
     bottomB = b.y + b.h;
 
     //If any of the sides from A are outside of B
-    if( bottomA <= topB )
-    {
+    if (bottomA <= topB) {
         return false;
     }
 
-    if( topA >= bottomB )
-    {
+    if (topA >= bottomB) {
         return false;
     }
 
-    if( rightA <= leftB )
-    {
+    if (rightA <= leftB) {
         return false;
     }
 
-    if( leftA >= rightB )
-    {
+    if (leftA >= rightB) {
         return false;
     }
 
