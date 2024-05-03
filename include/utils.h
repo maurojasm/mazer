@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UTILS_H
+#define UTILS_H
 
 //Using SDL, SDL_image
 #include <SDL2/SDL.h>
@@ -47,3 +48,5 @@ inline bool check_collision(SDL_Rect a, SDL_Rect b) {
     //If none of the sides from A are outside B
     return true;
 }
+
+#endif

@@ -1,11 +1,3 @@
-#include <SDL2/SDL.h>
-#include <SDL2_image/SDL_image.h>
-// #include <SDL.h>
-// #include <SDL_image.h>
-#include <stdio.h>
-#include <string>
-#include <fstream>
-
 #include "../include/dot.h"
 #include "../include/texture.h"
 #include "../include/utils.h"
@@ -45,7 +37,7 @@ void Dot::handle_event(SDL_Event& e) {
     }
 }
 
-void Dot::move(int LEVEL_HEIGHT, int LEVEL_WIDTH, int TOTAL_TILES, Tile* game_tiles[]) {
+void Dot::move(int LEVEL_HEIGHT, int LEVEL_WIDTH, int TOTAL_TILES, std::vector<Tile*> game_tiles) {
     // move dot left or right
     hit_box.x += x_vel;
 
@@ -89,7 +81,7 @@ void Dot::set_camera(SDL_Rect& camera, int SCREEN_WIDTH,
     }
 }
 
-bool Dot::touches_wall(SDL_Rect hit_box, Tile* game_tiles[], int TOTAL_TILES) {
+bool Dot::touches_wall(SDL_Rect hit_box, std::vector<Tile*> game_tiles, int TOTAL_TILES) {
     // check all tiles
     for(int i = 0; i < TOTAL_TILES; i++) {
         // if tile is a wall type

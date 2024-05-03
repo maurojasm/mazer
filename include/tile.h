@@ -1,11 +1,9 @@
-#pragma once
+#ifndef TILE_H
+#define TILE_H
 
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
-// #include <SDL.h>
-// #include <SDL_image.h>
-#include <stdio.h>
-#include <string>
+// #include <stdio.h>
 
 #include "texture.h"
 
@@ -40,3 +38,5 @@ class Tile {
         // title type
         int tile_type;
 };
+
+#endif
