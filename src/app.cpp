@@ -123,13 +123,13 @@ bool App::set_tiles() {
     if (tiles_loaded) {
         tile_sprites[TILE_GREEN].x = 0;
         tile_sprites[TILE_GREEN].y = 0;
-        tile_sprites[TILE_GREEN].w = game_tiles[0]->get_width();
-        tile_sprites[TILE_GREEN].h = game_tiles[0]->get_height();
+        tile_sprites[TILE_GREEN].w = tile_texture.get_width() / 2;
+        tile_sprites[TILE_GREEN].h = tile_texture.get_height();
 
-        tile_sprites[TILE_BLACK].x = 80;
+        tile_sprites[TILE_BLACK].x = tile_texture.get_width() / 2;
         tile_sprites[TILE_BLACK].y = 0;
-        tile_sprites[TILE_BLACK].w = game_tiles[0]->get_width();
-        tile_sprites[TILE_BLACK].h = game_tiles[0]->get_height();
+        tile_sprites[TILE_BLACK].w = tile_texture.get_width() / 2;
+        tile_sprites[TILE_BLACK].h = tile_texture.get_height();
     }
 
     // return if success on loading
