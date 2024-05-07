@@ -7,124 +7,174 @@
 
 using std::string;
 
-// holds one random maze, but can generate random mazes as well
+/*
+Holds one random maze, but can generate random mazes as well
+*/
 class Maze {
-    public:
-        // constructor
-        Maze(int size = 5);
+public:
+    /*
+    Constructor - set the maze of the given size and creates a map of it.
 
-        // generates random hex maze
-        // default size is 5
-        string generate_hex_maze(int size = 5);
+    @param size size of maze to hold
+    */
+    Maze(int size = 5);
 
-        // generates map of given maze
-        string generate_map_maze(string maze, int size);
+    /*
+    Generates random maze in hex format. Default size is 5.
 
-        // get object's maze
-        string get_maze();
+    @param size size of maze to generate
+    @return     maze in hex format
+    */
+    string generate_hex_maze(int size = 5);
 
-        // get object's maze map
-        string get_map();
+    /*
+    Generates a map of a given maze in hex format into binary format.
 
-        // get object's maze size
-        int get_size();
+    @param maze maze in hex format
+    @param size size of the hex maze
+    @return     map of given maze
+    */
+    string generate_map_maze(string maze, int size);
 
-    private:
-        // generator of maze in hexadecimal format
-        Maze_Gen maze_generator;
+    /*
+    @return object's hex maze.
+    */
+    string get_maze();
 
-        // finds cell in array
-        bool has_char(char cell, char arr[]);
+    /*
+    @return object's maze map.
+    */
+    string get_map();
 
-        // checks if cell has right wall
-        bool has_right_wall(char cell) { return has_char(cell, has_right); }
+    /*
+    @return object's maze size.
+    */
+    int get_size();
 
-        // checks if cell has top wall
-        bool has_top_wall(char cell) { return has_char(cell, has_top); }
+private:
+    // generator of maze in hexadecimal format
+    Maze_Gen maze_generator;
 
-        // removes double walls from the maze
-        string remove_dbl_walls(string maze, int size);
+    /*
+    Checks if current char is in the array.
 
-        // fills corners after removing double walls
-        string fill_wall(string map, int size);
+    @param cell character to find in array
+    @param arr  character arr to look into
+    @return     true if cell was found
+    */
+    bool has_char(char cell, char arr[]);
 
-        // hex maze
-        string hex_maze;
+    /*
+    Checks if cell has a right wall.
 
-        // map of hex maze
-        string map_maze;
+    @param cell cell to check
+    @return     true if cell was found
+    */
+    bool has_right_wall(char cell) { return has_char(cell, has_right); }
 
-        // maze size
-        int m_size;
+    /*
+    Checks if cell has a top wall.
 
-        // cells that have a right wall
-        char has_right[7] = {'4', '5', '6', '7', 'c', 'd', 'e'};
+    @param cell cell to check
+    @return     true if cell was found
+    */
+    bool has_top_wall(char cell) { return has_char(cell, has_top); }
 
-        // cells that have a top wall
-        char has_top[7] = {'8', '9', 'a', 'b', 'c', 'd', 'e'};
+    /*
+    Removes double walls from a hex maze.
 
-        // maze tile to map
-        string
-        tile_0[4] = {"0000",
+    @param maze hex maze to remove the walls
+    @param size size of maze
+    @return     hex maze without double walls
+    */
+    string remove_dbl_walls(string maze, int size);
+
+    /*
+    Fill in corners of walls after removing double walls.
+
+    @param map  map of the maze
+    @param size size of the maze
+    @return     map of maze with cornes filled
+    */
+    string fill_wall(string map, int size);
+
+    // hex maze
+    string hex_maze;
+
+    // map of hex maze
+    string map_maze;
+
+    // maze size
+    int m_size;
+
+    // cells that have a right wall
+    char has_right[7] = { '4', '5', '6', '7', 'c', 'd', 'e' };
+
+    // cells that have a top wall
+    char has_top[7] = { '8', '9', 'a', 'b', 'c', 'd', 'e' };
+
+    // maze cell to map
+    string
+        cell_0[4] = { "0000",
                     "0000",
                     "0000",
-                    "0000"},
-        tile_1[4] = {"0001",
+                    "0000" },
+        cell_1[4] = { "0001",
                     "0001",
                     "0001",
-                    "0001"},
-        tile_2[4] = {"0000",
+                    "0001" },
+        cell_2[4] = { "0000",
                     "0000",
                     "0000",
-                    "1111"},
-        tile_3[4] = {"0001",
+                    "1111" },
+        cell_3[4] = { "0001",
                     "0001",
                     "0001",
-                    "1111"},
-        tile_4[4] = {"1000",
+                    "1111" },
+        cell_4[4] = { "1000",
                     "1000",
                     "1000",
-                    "1000"},
-        tile_5[4] = {"1001",
+                    "1000" },
+        cell_5[4] = { "1001",
                     "1001",
                     "1001",
-                    "1001"},
-        tile_6[4] = {"1000",
+                    "1001" },
+        cell_6[4] = { "1000",
                     "1000",
                     "1000",
-                    "1111"},
-        tile_7[4] = {"1001",
+                    "1111" },
+        cell_7[4] = { "1001",
                     "1001",
                     "1001",
-                    "1111"},
-        tile_8[4] = {"1111",
+                    "1111" },
+        cell_8[4] = { "1111",
                     "0000",
                     "0000",
-                    "0000"},
-        tile_9[4] = {"1111",
+                    "0000" },
+        cell_9[4] = { "1111",
                     "0001",
                     "0001",
-                    "0001"},
-        tile_a[4] = {"1111",
+                    "0001" },
+        cell_a[4] = { "1111",
                     "0000",
                     "0000",
-                    "1111"},
-        tile_b[4] = {"1111",
+                    "1111" },
+        cell_b[4] = { "1111",
                     "0001",
                     "0001",
-                    "1111"},
-        tile_c[4] = {"1111",
+                    "1111" },
+        cell_c[4] = { "1111",
                     "1000",
                     "1000",
-                    "1000"},
-        tile_d[4] = {"1111",
+                    "1000" },
+        cell_d[4] = { "1111",
                     "1001",
                     "1001",
-                    "1001"},
-        tile_e[4] = {"1111",
+                    "1001" },
+        cell_e[4] = { "1111",
                     "1000",
                     "1000",
-                    "1111"};
+                    "1111" };
 };
 
 #endif

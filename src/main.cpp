@@ -3,8 +3,6 @@
     @details: Mazer game dev
 */
 
-#include <iostream>
-
 #include "../include/app.h"
 
 int main(int argc, char* args[]) {
