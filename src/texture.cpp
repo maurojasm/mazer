@@ -88,8 +88,8 @@ void Texture::render(int x, int y, SDL_Renderer* renderer,
 
     // set clip rendering dimensions
     if (clip != NULL) {
-        renderQuad->w = clip->w;
-        renderQuad->h = clip->h;
+        // renderQuad->w = clip->w;
+        // renderQuad->h = clip->h;
     }
 
     // render to screen

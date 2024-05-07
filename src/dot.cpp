@@ -60,7 +60,13 @@ void Dot::move(int LEVEL_HEIGHT, int LEVEL_WIDTH, int TOTAL_TILES, std::vector<T
 
 void Dot::render(Texture& dot_texture, SDL_Rect& camera, SDL_Renderer* renderer) {
     // render dot with texture
-    dot_texture.render(hit_box.x - camera.x, hit_box.y - camera.y, renderer);
+    SDL_Rect renderQuad = {
+        hit_box.x - camera.x,
+        hit_box.y - camera.y,
+        hit_box.w,
+        hit_box.h
+    };
+    dot_texture.render(hit_box.x - camera.x, hit_box.y - camera.y, renderer, NULL, &renderQuad);
 }
 
 void Dot::set_camera(SDL_Rect& camera, int SCREEN_WIDTH, int SCREEN_HEIGHT, int LEVEL_WIDTH, int LEVEL_HEIGHT) {

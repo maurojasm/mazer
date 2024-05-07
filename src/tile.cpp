@@ -17,6 +17,12 @@ Tile::Tile(int x, int y, int t_type) {
 void Tile::render(SDL_Rect& camera, Texture& tile_texture, SDL_Rect tile_sprites[], SDL_Renderer* renderer) {
     // render if tile is inside of camera
     if (check_collision(camera, hit_box)) {
-        tile_texture.render(hit_box.x - camera.x, hit_box.y - camera.y, renderer, &tile_sprites[tile_type]);
+        SDL_Rect renderQuad = {
+            hit_box.x - camera.x,
+            hit_box.y - camera.y,
+            TILE_WIDTH,
+            TILE_HEIGHT
+        };
+        tile_texture.render(hit_box.x - camera.x, hit_box.y - camera.y, renderer, &tile_sprites[tile_type], &renderQuad);
     }
 }
