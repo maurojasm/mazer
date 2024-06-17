@@ -5,6 +5,13 @@
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
 
+enum Direction {
+    UP_DIR = 1,
+    DOWN_DIR = 2,
+    LEFT_DIR = 3,
+    RIGHT_DIR = 4
+};
+
 /*
 Checks collision between two SDL_Rect.
 

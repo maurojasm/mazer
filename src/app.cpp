@@ -370,6 +370,11 @@ void App::start() {
     }
     set_menu();
 
+    Player player1("assets/media/png/player/foo.png", renderer, 30, 60, 0, 160);
+    player1.set_vel(3);
+    player1.set_frames(4);
+    player1.set_bullet_texture(&dot_texture);
+
     //app running
     while (!quit) {
         // handle events on queue
@@ -385,7 +390,8 @@ void App::start() {
                 diff_menu_handle_e();
             }
             else if (play) {
-                player_handle_e();
+                // player_handle_e();
+                player1.handle_event(e);
                 // check for pause
                 if (e.type == SDL_KEYDOWN) {
                     if (e.key.keysym.sym == SDLK_ESCAPE) {
@@ -414,19 +420,22 @@ void App::start() {
         }
         else if (play) {
             // move dot
-            dot.move(LEVEL_WIDTH, LEVEL_HEIGHT, TOTAL_TILES, game_tiles);
+            player1.move(LEVEL_WIDTH, LEVEL_HEIGHT, TOTAL_TILES, game_tiles);
+            // dot.move(LEVEL_WIDTH, LEVEL_HEIGHT, TOTAL_TILES, game_tiles);
             // check if player has won
             if (dot.check_win(LEVEL_WIDTH, LEVEL_HEIGHT)) {
                 printf("Player has won!\n");
                 set_level(curr_diff);
             }
             // set camera over player
-            dot.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);
+            player1.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);
+            // dot.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);
 
             render_tiles();
 
             // render the dot
-            dot.render(dot_texture, camera, renderer);
+            player1.render(renderer, camera);
+            // dot.render(dot_texture, camera, renderer);
         }
         //Update screen
         SDL_RenderPresent(renderer);

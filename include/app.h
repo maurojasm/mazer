@@ -13,6 +13,8 @@
 #include "texture.h"
 #include "maze.h"
 #include "menu.h"
+#include "player.h"
+#include "bullet.h"
 
 /*
 Game App
