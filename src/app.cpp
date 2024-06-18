@@ -423,9 +423,10 @@ void App::start() {
             player1.move(LEVEL_WIDTH, LEVEL_HEIGHT, TOTAL_TILES, game_tiles);
             // dot.move(LEVEL_WIDTH, LEVEL_HEIGHT, TOTAL_TILES, game_tiles);
             // check if player has won
-            if (dot.check_win(LEVEL_WIDTH, LEVEL_HEIGHT)) {
+            if (player1.check_win(LEVEL_WIDTH, LEVEL_HEIGHT)) {
                 printf("Player has won!\n");
                 set_level(curr_diff);
+                player1.reset_location();
             }
             // set camera over player
             player1.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);

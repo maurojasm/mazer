@@ -56,8 +56,7 @@ void Player::handle_event(SDL_Event& e) {
         case SDLK_a: vel_x -= p_vel; dir = LEFT_DIR; break;
         case SDLK_d: vel_x += p_vel; dir = RIGHT_DIR; break;
         case SDLK_SPACE:
-            // printf("Shoot!\n"); 
-            bullets.push_back(Bullet(hit_box.x + p_width, hit_box.y + 5, dir));
+            bullets.push_back(Bullet((hit_box.x + p_width), (hit_box.y + 5), dir));
             break;
         }
     }
@@ -138,7 +137,7 @@ void Player::render(SDL_Renderer* renderer, SDL_Rect& camera) {
     player_texture.render(hit_box.x - camera.x, hit_box.y - camera.y, renderer, &clip, &renderQuad, 0, NULL, flip);
 
     for (unsigned i = 0; i < bullets.size(); i++) {
-        bullets[i].render(bullet_texture, renderer);
+        bullets[i].render(bullet_texture, renderer, camera);
     }
 }
 
