@@ -17,9 +17,9 @@ bool Bullet::check_collision(int screen_w, int screen_h) {
     return false;
 }
 
-void Bullet::render(Texture* texture, SDL_Renderer* renderer) {
-    SDL_Rect renderQuad{ b_x, b_y, b_width, b_height };
-    texture->render(b_x, b_y, renderer, NULL, &renderQuad);
+void Bullet::render(Texture* texture, SDL_Renderer* renderer, SDL_Rect& camera) {
+    SDL_Rect renderQuad{ (b_x - camera.x), (b_y - camera.y), b_width, b_height };
+    texture->render((b_x - camera.x), (b_y - camera.y), renderer, NULL, &renderQuad);
 }
 
 void Bullet::move(int screen_w, int screen_h) {
