@@ -1,7 +1,8 @@
 #include "../include/player.h"
 
 Player::Player(string im_path, SDL_Renderer* renderer, int w, int h, int x, int y) {
-    if (!player_texture.load_from_file(im_path, renderer)) {
+    int rgb[] = { 0, 0xFF, 0xFF };
+    if (!player_texture.load_from_file(im_path, renderer, true, rgb)) {
         printf("Error loading Player texture. SDL Error: %s\n", SDL_GetError());
         exit(1);
     }
@@ -72,7 +73,7 @@ void Player::handle_event(SDL_Event& e) {
     }
 }
 
-void Player::move(int LEVEL_HEIGHT, int LEVEL_WIDTH, int TOTAL_TILES, std::vector<Tile*> game_tiles) {
+void Player::move(int LEVEL_HEIGHT, int LEVEL_WIDTH, int TOTAL_TILES, vector<Tile*> game_tiles) {
     // move the player in the x direction
     hit_box.x += vel_x;
 
@@ -95,14 +96,13 @@ void Player::move(int LEVEL_HEIGHT, int LEVEL_WIDTH, int TOTAL_TILES, std::vecto
     else { curr_frame = 0; }
     // decrease number of time between frames rendered
     if (curr_frame / 4 >= num_frames) { curr_frame = 0; }
-    move_bullets(LEVEL_WIDTH, LEVEL_HEIGHT);
+    move_bullets(LEVEL_WIDTH, LEVEL_HEIGHT, game_tiles);
 }
 
-// @todo check for wall collisions
-void Player::move_bullets(int screen_w, int screen_h) {
+void Player::move_bullets(int level_w, int level_h, vector<Tile*> game_tiles) {
     for (unsigned i = 0; i < bullets.size(); i++) {
-        bullets[i].move(screen_w, screen_h);
-        if (bullets[i].check_collision(screen_w, screen_h)) {
+        bullets[i].move(level_w, level_h);
+        if (bullets[i].collision(level_w, level_h, game_tiles)) {
             bullets.erase(bullets.begin() + i);
             i--;
         }
