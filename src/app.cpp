@@ -1,6 +1,7 @@
 #include "../include/app.h"
 
 App::App() {
+    // initialize SDL subsystems
     if (!init()) {
         printf("Failed to initialize!\n");
         exit(1);
@@ -8,6 +9,7 @@ App::App() {
 }
 
 App::~App() {
+    // call close function 
     close();
 }
 
@@ -92,6 +94,7 @@ bool App::set_tiles() {
     for (int i = 0; i < TOTAL_TILES; i++) {
         // type of tile
         int tile_type = -1;
+        // substract ascii char offset
         tile_type = map[i] - '0';
 
         // check if tile type is correct
@@ -108,7 +111,7 @@ bool App::set_tiles() {
         //Move to next tile spot
         x += game_tiles[i]->get_width();
 
-        //If we've gone too far
+        //If we've gone too far start new row
         if (x >= LEVEL_WIDTH) {
             //Move back
             x = 0;
@@ -141,10 +144,11 @@ void App::erase_tiles() {
 
     for (unsigned i = 0; i < game_tiles.size(); i++) {
         if (game_tiles[i] != NULL) {
-            delete game_tiles[i];
+            delete game_tiles[i]; // calls ~Tile()
             game_tiles[i] = NULL;
         }
     }
+    // remove all pointers from vector
     game_tiles.clear();
 }
 

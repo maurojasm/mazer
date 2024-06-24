@@ -124,6 +124,10 @@ private:
     // default maze dimensions
     int MAZE_DIM = 5;
 
+    enum Difficulty {
+        EASY, MEDIUM, HARD
+    };
+
     // default difficulty
     int curr_diff = 0; // easy
 
