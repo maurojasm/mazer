@@ -79,7 +79,7 @@ public:
     void reset_location();
 
 private:
-    void move_bullets(int screen_w, int screen_h);
+    void move_bullets(int screen_w, int screen_h, vector<Tile*> game_tiles);
 
     // int p_x, p_y;
     int p_width, p_height;
