@@ -440,7 +440,7 @@ void App::start() {
                 printf("Player has won!\n");
                 // reset level and player location
                 set_level(curr_diff);
-                mc.reset_location();
+                mc.reset_location(0, 160);
             }
             // set camera to top of player
             mc.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);

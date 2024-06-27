@@ -37,7 +37,7 @@ public:
     void start();
 private:
     /*
-    Game's difficulty levels
+    Game's difficulty levels.
     */
     enum Difficulty {
         EASY, MEDIUM, HARD
@@ -81,27 +81,27 @@ private:
     void render_tiles();
 
     /*
-    Creates the menu objects
+    Creates the menu objects.
     */
     void set_menus();
 
     /*
-    Creates main menu and adds pertinent options
+    Creates main menu and adds pertinent options.
     */
     void set_main_menu();
 
     /*
-    Creates difficulty menu and adds pertinent options
+    Creates difficulty menu and adds pertinent options.
     */
     void set_diff_menu();
 
     /*
-    Creates pause menu and adds pertinent options
+    Creates pause menu and adds pertinent options.
     */
     void set_pause_menu();
 
     /*
-    Sets player's default stats and texture as well as bullet texture
+    Sets player's default stats and texture as well as bullet texture.
     */
     void set_player();
 
