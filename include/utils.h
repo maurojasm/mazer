@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2_image/SDL_image.h>
 
+// Direction given to player and bullet
 enum Direction {
     UP_DIR = 1,
     DOWN_DIR = 2,
