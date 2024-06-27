@@ -193,89 +193,100 @@ void App::close() {
     printf("*** All processes exited successfully! ***\n");
 }
 
-void App::set_menu() {
-    // image ratios and dimesions
+void App::set_menus() {
+    // set all menus
+    set_main_menu();
+    set_diff_menu();
+    set_pause_menu();
+}
+
+void App::set_main_menu() {
+    // image ratios
     double mi_ratio = 2.83, new_g_ratio = 5.97, op_ratio = 3.4, ex_ratio = 2.16;
-    int mi_width = 600, mi_height = mi_width / mi_ratio,
-        ng_w = SCREEN_WIDTH / 3.5, ng_h = ng_w / new_g_ratio,
-        op_w = SCREEN_WIDTH / 5, op_h = op_w / op_ratio,
-        ex_w = SCREEN_WIDTH / 8, ex_h = ex_w / ex_ratio;
+    // image dimensions based on screen width and image ratios
+    int mi_width = 600, mi_height = mi_width / mi_ratio,        // main image
+        ng_w = SCREEN_WIDTH / 3.5, ng_h = ng_w / new_g_ratio,   // new game
+        op_w = SCREEN_WIDTH / 5, op_h = op_w / op_ratio,        // options
+        ex_w = SCREEN_WIDTH / 8, ex_h = ex_w / ex_ratio;        // exit
     // create main menu that covers all the screen
     main_menu = new Menu("assets/media/png/menu/logo.png", SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
     // resize logo to specific dimention
     main_menu->set_main_image_dim(mi_width, mi_height);
-    // set menu height offset
+    // set menu height offset in pixels
     main_menu->set_offset(50);
     // add options
-    main_menu->add_option(ng_w, ng_h, "assets/media/png/menu/new_game.png");
-    main_menu->add_option(op_w, op_h, "assets/media/png/menu/options.png");
-    main_menu->add_option(ex_w, ex_h, "assets/media/png/menu/exit.png");
+    main_menu->add_option(ng_w, ng_h, "assets/media/png/menu/new_game.png"); // new game
+    main_menu->add_option(op_w, op_h, "assets/media/png/menu/options.png");  // options
+    main_menu->add_option(ex_w, ex_h, "assets/media/png/menu/exit.png");     // exit game
+}
 
+void App::set_diff_menu() {
+    // image ratios
     double ea_ratio = 2.23, md_ratio = 4.9, hd_ratio = 2.99, mm_ratio = 6.27;
-    int mm_w = SCREEN_WIDTH / 3.5, mm_h = mm_w / mm_ratio,
-        ea_w = SCREEN_WIDTH / 8, ea_h = ea_w / ea_ratio,
-        md_w = SCREEN_WIDTH / 5, md_h = md_w / md_ratio,
-        hd_w = SCREEN_WIDTH / 8, hd_h = hd_w / hd_ratio;
+    // image dimensions based on screen width and image ratios
+    int mm_w = SCREEN_WIDTH / 3.5, mm_h = mm_w / mm_ratio,  // main menu
+        ea_w = SCREEN_WIDTH / 8, ea_h = ea_w / ea_ratio,    // easy
+        md_w = SCREEN_WIDTH / 5, md_h = md_w / md_ratio,    // medium
+        hd_w = SCREEN_WIDTH / 8, hd_h = hd_w / hd_ratio;    // hard
     // create diff menu with no logo that covers all the screen
     difficulty_menu = new Menu(SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
     // set menu height offset
     difficulty_menu->set_offset(50);
     // add options
-    difficulty_menu->add_option(ea_w, ea_h, "assets/media/png/menu/easy.png"); // easy
-    difficulty_menu->add_option(md_w, md_h, "assets/media/png/menu/medium.png"); // medium
-    difficulty_menu->add_option(hd_w, hd_h, "assets/media/png/menu/hard.png"); // hard
+    difficulty_menu->add_option(ea_w, ea_h, "assets/media/png/menu/easy.png");      // easy
+    difficulty_menu->add_option(md_w, md_h, "assets/media/png/menu/medium.png");    // medium
+    difficulty_menu->add_option(hd_w, hd_h, "assets/media/png/menu/hard.png");      // hard
     difficulty_menu->add_option(mm_w, mm_h, "assets/media/png/menu/main_menu.png"); // main menu
+}
 
-    double con_ratio = 5.35;
-    int con_w = SCREEN_WIDTH / 5, con_h = con_w / con_ratio;
+void App::set_pause_menu() {
+    // image ratios
+    double con_ratio = 5.35, mm_ratio = 6.27, ex_ratio = 2.16;
+    // image dimensions based on screen width and image ratios
+    int mm_w = SCREEN_WIDTH / 3.5, mm_h = mm_w / mm_ratio,    // main menu
+        ex_w = SCREEN_WIDTH / 8, ex_h = ex_w / ex_ratio,      // exit
+        con_w = SCREEN_WIDTH / 5, con_h = con_w / con_ratio;  // continue
     // create pause menu with no logo that covers all the screen
     pause_menu = new Menu(SCREEN_WIDTH, SCREEN_HEIGHT, renderer);
     // set menu height offset
     pause_menu->set_offset(50);
     // add options
     pause_menu->add_option(con_w, con_h, "assets/media/png/menu/continue.png"); // continue
-    pause_menu->add_option(mm_w, mm_h, "assets/media/png/menu/main_menu.png"); // main menu
-    pause_menu->add_option(ex_w, ex_h, "assets/media/png/menu/exit.png"); // exit
+    pause_menu->add_option(mm_w, mm_h, "assets/media/png/menu/main_menu.png");  // main menu
+    pause_menu->add_option(ex_w, ex_h, "assets/media/png/menu/exit.png");       // exit
 }
 
-void App::set_level(int difficulty) {
-    if (difficulty == 0) { // easy 5x5 maze
+void App::set_level(Difficulty difficulty) {
+    // set maze dimension based on difficulty
+    switch (difficulty) {
+    case EASY: // 5x5 maze
         MAZE_DIM = 5;
-
-        LEVEL_WIDTH = 1600;
-        LEVEL_HEIGHT = 1600;
-
-        TOTAL_TILES = 400;
-    }
-    else if (difficulty == 1) { // medium 8x8 maze
+        break;
+    case MEDIUM: // 8x8 maze
         MAZE_DIM = 8;
-
-        LEVEL_WIDTH = 2560;
-        LEVEL_HEIGHT = 2560;
-
-        TOTAL_TILES = 1024;
-    }
-    else if (difficulty == 2) { // hard 10x10 maze
+        break;
+    case HARD: // 10x10 maze
         MAZE_DIM = 10;
-
-        LEVEL_WIDTH = 3200;
-        LEVEL_HEIGHT = 3200;
-
-        TOTAL_TILES = 1600;
-    }
-    else {
+        break;
+    default:
         printf("Incompabile Difficulty!\n");
         return;
     }
-    if (my_maze == NULL) { // create maze object
-        my_maze = new Maze(MAZE_DIM);
+    // set level dimensions based on maze dimension
+    LEVEL_WIDTH = 4 * 80 * MAZE_DIM;  // 4 tiles of 80 px per cell
+    LEVEL_HEIGHT = LEVEL_WIDTH;       // square maze
+    TOTAL_TILES = (4 * MAZE_DIM) * (4 * MAZE_DIM); // square maze
 
-        if (!set_tiles()) { // set tiles to specific level
+    // create maze object if none
+    if (my_maze == NULL) {
+        my_maze = new Maze(MAZE_DIM);
+        // set tiles to specific level
+        if (!set_tiles()) {
             printf("Falied to set tiles!\n");
             return;
         }
     }
-    else {
+    else { // level is reset or new difficulty has been set
         delete my_maze;
         my_maze = new Maze(MAZE_DIM);
 
@@ -284,86 +295,87 @@ void App::set_level(int difficulty) {
             return;
         }
 
-        // reset dot location
-        dot.reset_location();
+        // reset player location
+        mc.reset_location();
     }
+}
+
+void App::set_player() {
+    // blue hue to remove
+    int rgb[] = { 0, 0xFF, 0xFF };
+    // set player texture and color key blue background
+    mc.set_player_texture("assets/media/png/player/foo.png", renderer, true, rgb);
+    // set player dimensions: width, height, x, y, vel, frames, and direction
+    mc.set_dims(30, 60, 0, 160, 3, 4, RIGHT_DIR);
+    mc.set_bullet_texture(&dot_texture);
 }
 
 void App::main_menu_handle_e() {
     // get which button was pressed
-    button_pressed = main_menu->handle_event(&e);
+    int button_pressed = main_menu->handle_event(&e);
 
     switch (button_pressed) {
     case 0: // start game, show difficulty menu
-        active_main_menu = false;
-        active_difficulty_menu = true;
+        curr_state = DIFF_MENU;
         break;
     case 1: // @todo shows options menu
         printf("Select options\n");
         break;
     case 2: // exit the game
-        quit = true;
+        curr_state = QUIT;
         break;
     }
 }
 
 void App::diff_menu_handle_e() {
     // get which button was pressed
-    button_pressed = difficulty_menu->handle_event(&e);
+    int button_pressed = difficulty_menu->handle_event(&e);
 
     switch (button_pressed) {
     case 0: // easy difficulty
         printf("Easy Difficulty!\n");
-        curr_diff = 0;
+        curr_diff = EASY;
         set_level(curr_diff);
-        play = true;
-        active_difficulty_menu = false;
+        curr_state = PLAY;
         break;
     case 1: // medium difficulty
         printf("Medium Difficulty!\n");
-        curr_diff = 1;
+        curr_diff = MEDIUM;
         set_level(curr_diff);
-        play = true;
-        active_difficulty_menu = false;
+        curr_state = PLAY;
         break;
     case 2: // hard difficulty
-        printf("Difficult Difficulty!\n");
-        curr_diff = 2;
+        printf("Hard Difficulty!\n");
+        curr_diff = HARD;
         set_level(curr_diff);
-        play = true;
-        active_difficulty_menu = false;
+        curr_state = PLAY;
         break;
     case 3: // goes back to main menu
-        active_main_menu = true;
-        active_difficulty_menu = false;
+        curr_state = MAIN_MENU;
         break;
     }
 }
 
 void App::pause_menu_handle_e() {
     // get which button was pressed
-    button_pressed = pause_menu->handle_event(&e);
+    int button_pressed = pause_menu->handle_event(&e);
 
     switch (button_pressed) {
     case 0: // resume game
-        play = true;
-        active_pause_menu = false;
+        curr_state = PLAY;
         break;
-    case 1:
-        play = false;
-        active_main_menu = true;
-        active_difficulty_menu = false;
-        active_pause_menu = false;
+    case 1: // main menu
+        curr_state = MAIN_MENU;
         break;
     case 2: // quit game
-        quit = true;
+        curr_state = QUIT;
         break;
     }
 }
 
 void App::player_handle_e() {
     // player object handles event 
-    dot.handle_event(e);
+    mc.handle_event(e);
 }
 
 void App::start() {
@@ -372,40 +384,40 @@ void App::start() {
         printf("Failed to load media!\n");
         return;
     }
-    set_menu();
-
-    Player player1("assets/media/png/player/foo.png", renderer, 30, 60, 0, 160);
-    player1.set_vel(3);
-    player1.set_frames(4);
-    player1.set_bullet_texture(&dot_texture);
+    // set menus and player objects
+    set_menus();
+    set_player();
 
     //app running
-    while (!quit) {
+    while (curr_state != QUIT) {
         // handle events on queue
         while (SDL_PollEvent(&e) != 0) {
             // user requests quit
             if (e.type == SDL_QUIT) {
-                quit = true;
+                curr_state = QUIT;
             }
-            else if (active_main_menu) {
+
+            switch (curr_state) {
+            case MAIN_MENU:
                 main_menu_handle_e();
-            }
-            else if (active_difficulty_menu) {
+                break;
+            case DIFF_MENU:
                 diff_menu_handle_e();
-            }
-            else if (play) {
-                // player_handle_e();
-                player1.handle_event(e);
-                // check for pause
+                break;
+            case PLAY:
+                player_handle_e();
+                // check for pause button (esc)
                 if (e.type == SDL_KEYDOWN) {
                     if (e.key.keysym.sym == SDLK_ESCAPE) {
-                        play = false;
-                        active_pause_menu = true;
+                        curr_state = PAUSE_MENU;
                     }
                 }
-            }
-            else if (active_pause_menu) {
+                break;
+            case PAUSE_MENU:
                 pause_menu_handle_e();
+                break;
+            case QUIT:
+                return;
             }
         }
         //Clear screen
@@ -413,34 +425,37 @@ void App::start() {
         SDL_RenderClear(renderer);
 
         // render active game state
-        if (active_main_menu) {
+        switch (curr_state) {
+        case MAIN_MENU:
             main_menu->render();
-        }
-        else if (active_difficulty_menu) {
+            break;
+        case DIFF_MENU:
             difficulty_menu->render();
-        }
-        else if (active_pause_menu) {
-            pause_menu->render();
-        }
-        else if (play) {
-            // move dot
-            player1.move(LEVEL_WIDTH, LEVEL_HEIGHT, TOTAL_TILES, game_tiles);
-            // dot.move(LEVEL_WIDTH, LEVEL_HEIGHT, TOTAL_TILES, game_tiles);
-            // check if player has won
-            if (player1.check_win(LEVEL_WIDTH, LEVEL_HEIGHT)) {
+            break;
+        case PLAY:
+            // move player 
+            mc.move(LEVEL_WIDTH, LEVEL_HEIGHT, TOTAL_TILES, game_tiles);
+            // check if player is in winning zone
+            if (mc.check_win(LEVEL_WIDTH, LEVEL_HEIGHT)) {
                 printf("Player has won!\n");
+                // reset level and player location
                 set_level(curr_diff);
-                player1.reset_location();
+                mc.reset_location();
             }
-            // set camera over player
-            player1.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);
-            // dot.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);
+            // set camera to top of player
+            mc.set_camera(camera, SCREEN_WIDTH, SCREEN_HEIGHT, LEVEL_WIDTH, LEVEL_HEIGHT);
 
+            // render tiles in camera space
             render_tiles();
 
-            // render the dot
-            player1.render(renderer, camera);
-            // dot.render(dot_texture, camera, renderer);
+            // render player relative to camera
+            mc.render(renderer, camera);
+            break;
+        case PAUSE_MENU:
+            pause_menu->render();
+            break;
+        case QUIT:
+            return;
         }
         //Update screen
         SDL_RenderPresent(renderer);

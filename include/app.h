@@ -37,6 +37,13 @@ public:
     void start();
 private:
     /*
+    Game's difficulty levels
+    */
+    enum Difficulty {
+        EASY, MEDIUM, HARD
+    };
+
+    /*
     Loads initial assets such as game character and tiles png to create their textures.
 
     @return true if media was loaded successfully
@@ -74,16 +81,36 @@ private:
     void render_tiles();
 
     /*
-    Creates the menu objects and adds the options to each of them.
+    Creates the menu objects
     */
-    void set_menu();
+    void set_menus();
+
+    /*
+    Creates main menu and adds pertinent options
+    */
+    void set_main_menu();
+
+    /*
+    Creates difficulty menu and adds pertinent options
+    */
+    void set_diff_menu();
+
+    /*
+    Creates pause menu and adds pertinent options
+    */
+    void set_pause_menu();
+
+    /*
+    Sets player's default stats and texture as well as bullet texture
+    */
+    void set_player();
 
     /*
     Sets the level difficulty and sets parameters for that given difficulty.
 
-    @param difficutly integer between 0-2 to represent 2 difficulties: easy, medium, hard respectively.
+    @param difficutly enum struct that can be either: EASY, MEDIUM, HARD
     */
-    void set_level(int difficulty);
+    void set_level(Difficulty difficulty);
 
     /*
     Makes the main menu handle the events and act accordingly.
@@ -124,24 +151,18 @@ private:
     // default maze dimensions
     int MAZE_DIM = 5;
 
-    enum Difficulty {
-        EASY, MEDIUM, HARD
+    // default difficulty
+    Difficulty curr_diff = EASY;
+
+    // game states
+    enum State {
+        QUIT, MAIN_MENU, DIFF_MENU, PAUSE_MENU, PLAY
     };
 
-    // default difficulty
-    int curr_diff = 0; // easy
+    // default current game state
+    State curr_state = MAIN_MENU;
 
-    // flags
-    bool quit = false,
-        active_main_menu = true,
-        active_difficulty_menu = false,
-        active_pause_menu = false,
-        play = false;
-
-    // button option
-    int button_pressed;
-
-    //The window we'll be rendering to
+    //The window to be render to
     SDL_Window* window = NULL;
 
     //The window renderer
@@ -154,8 +175,8 @@ private:
     //Event handler
     SDL_Event e;
 
-    // dot moving around the screen
-    Dot dot;
+    // Player object
+    Player mc;
 
     // level camera
     SDL_Rect camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
