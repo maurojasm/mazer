@@ -296,7 +296,7 @@ void App::set_level(Difficulty difficulty) {
         }
 
         // reset player location
-        mc.reset_location();
+        mc.reset_location(0, 160);
     }
 }
 
@@ -434,7 +434,7 @@ void App::start() {
             break;
         case PLAY:
             // move player 
-            mc.move(LEVEL_WIDTH, LEVEL_HEIGHT, TOTAL_TILES, game_tiles);
+            mc.move(LEVEL_WIDTH, LEVEL_HEIGHT, game_tiles);
             // check if player is in winning zone
             if (mc.check_win(LEVEL_WIDTH, LEVEL_HEIGHT)) {
                 printf("Player has won!\n");
